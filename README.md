@@ -21,6 +21,6 @@ Simple Crud application for miniature car collection.
         After installation, don't change path of the project. 
 
     Or 
-        Run installer 
+        Run setup 
             -Windows untested 
             -Require github account
