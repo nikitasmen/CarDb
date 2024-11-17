@@ -19,3 +19,8 @@ Simple Crud application for miniature car collection.
         - create shortcut for ./dist/main 
     !! Notice:
         After installation, don't change path of the project. 
+
+    Or 
+        Run installer 
+            -Windows untested 
+            -Require github account
