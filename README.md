@@ -24,3 +24,12 @@ Simple Crud application for miniature car collection.
         Run setup 
             -Windows untested 
             -Require github account
+
+For web app:
+    -Requirements: 
+        -flask
+
+
+    Execution: 
+        - python ./app.py
+        - open localhost 

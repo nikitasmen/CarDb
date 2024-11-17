@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Tracker Application</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+        }
+        input, select {
+            padding: 5px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Car Tracker Application</h1>
+
+    <!-- Form to add a new car -->
+    <form id="addCarForm" method="POST">
+        <input type="text" id="modelName" name="modelName" placeholder="Model Name" required><br>
+        <input type="text" id="manufacturer" name="manufacturer" placeholder="Manufacturer" required><br>
+        <input type="text" id="year" name="year" placeholder="Year" required><br>
+        <input type="text" id="originCountry" name="originCountry" placeholder="Origin Country" required><br>
+        <input type="text" id="category" name="category" placeholder="Category" required><br>
+        <input type="text" id="modelManufact" name="modelManufact" placeholder="Model Manufacturer" required><br>
+        <input type="url" id="more" name="more" placeholder="More Info URL" required><br>
+        <button type="submit">Add Car</button>
+    </form>
+
+    <!-- Button to display all cars -->
+    <button onclick="displayCars()">Display All Cars</button>
+
+    <h2>Car List</h2>
+    <table id="carTable">
+        <thead>
+            <tr>
+                <th>Model Name</th>
+                <th>Manufacturer</th>
+                <th>Year</th>
+                <th>Origin</th>
+                <th>Category</th>
+                <th>Model Manufacturer</th>
+                <th>More Info</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        // Function to display all cars
+        function displayCars() {
+            fetch('/display_cars')
+                .then(response => response.json())
+                .then(cars => {
+                    const tableBody = document.querySelector('#carTable tbody');
+                    tableBody.innerHTML = '';
+                    cars.forEach(car => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${car.modelName}</td>
+                            <td>${car.manufacturer}</td>
+                            <td>${car.year}</td>
+                            <td>${car.originCountry}</td>
+                            <td>${car.category}</td>
+                            <td>${car.modelManufact}</td>
+                            <td><a href="${car.more}" target="_blank">More Info</a></td>
+                            <td><button onclick="deleteCar('${car.modelName}')">Delete</button></td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                });
+        }
+
+        // Handle form submission to add a new car
+        document.getElementById('addCarForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/add_car', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Car added successfully!");
+                displayCars(); // Refresh the car list
+                document.getElementById('addCarForm').reset();
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error adding car.");
+            });
+        });
+
+        // Delete a car by model name
+        function deleteCar(modelName) {
+            if (confirm("Are you sure you want to delete this car?")) {
+                fetch('/delete_car', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `modelName=${modelName}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    displayCars(); // Refresh the car list
+                });
+            }
+        }
+
+        // Initially display all cars
+        displayCars();
+    </script>
+
+</body>
+</html>

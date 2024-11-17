@@ -1,12 +1,26 @@
 #!/bin/bash
 
-# 1. Install python3
-sudo apt-get update
-sudo apt-get install -y python3 python3-venv python3-pip
-
-# 2. Download zip/clone the repo
-# Replace the URL with the actual repository URL
+PROJECT_DIR="./CarDb"
 REPO_URL="https://github.com/nikitasmen/CarDb.git"
+
+if [ -d "$PROJECT_DIR" ]; then
+    echo "Project directory $PROJECT_DIR already exists. Deleting it..."
+    sudo rm -rf "$PROJECT_DIR"
+fi
+
+if ! command -v python3 &> /dev/null
+then
+    echo "Python3 is not installed. Installing Python3..."
+    sudo apt-get update
+    sudo apt-get install -y python3 python3-venv python3-pip
+else
+    echo "Python3 is already installed."
+fi
+if [ -d "/home/makis/Desktop/carDb" ]; then
+    sudo rm -f "/home/makis/Desktop/carDb"
+fi
+
+# 2. clone the repo
 git clone $REPO_URL
 
 # 3. Extract files (if downloaded as a zip)
@@ -15,7 +29,6 @@ git clone $REPO_URL
 # unzip $ZIP_FILE
 
 # 4. cd /path/to/the/project
-PROJECT_DIR="./CarDb"  # Replace with the actual directory name
 cd $PROJECT_DIR
 
 # 5. python -m venv venv
@@ -33,6 +46,6 @@ pyinstaller --onefile --windowed main.py
 
 # Create a shortcut for ./dist/main
 # This part is platform-specific. On Linux, you can create a symbolic link:
-ln -s $(pwd)/dist/main ~/Desktop/carDb
+ln -s $PROJECT_DIR/dist/main /home/makis/Desktop/carDb
 
 echo "Setup complete. The executable is available on your Desktop."
