@@ -6,7 +6,7 @@ Simple Crud application for miniature car collection.
     1. python 3 
         - tkinter
         - pyinstaller (Optional)
-        
+    2. Installer need github account
 ## Installation 
     1. Install python3 
     2. Download zip/ clone the repo
