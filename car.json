@@ -1,20 +1,21 @@
 [
     {
-        "modelName": "aerg",
-        "manufacturer": "aerga",
-        "year": "srtyjs",
-        "originCountry": "dtyhjd",
-        "category": "yjd",
-        "modelManufact": "dtyjd",
-        "more": "srtyhsth"
+      "modelName": "Tesla Model S",
+      "manufacturer": "Tesla",
+      "year": "2022",
+      "originCountry": "USA",
+      "category": "Sedan",
+      "modelManufact": "Electric",
+      "more": "https://www.tesla.com/models"
     },
     {
-        "modelName": "aerg",
-        "manufacturer": "aerg",
-        "year": "aerg",
-        "originCountry": "aerg",
-        "category": "aergaerg",
-        "modelManufact": "aerg",
-        "more": "aeg"
+      "modelName": "Toyota Corolla",
+      "manufacturer": "Toyota",
+      "year": "2021",
+      "originCountry": "Japan",
+      "category": "Compact",
+      "modelManufact": "Gasoline",
+      "more": "https://www.toyota.com/corolla/"
     }
-]
+  ]
+  
