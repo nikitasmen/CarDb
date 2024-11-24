@@ -1,13 +1,11 @@
-import Vue from "vue";
-import Router from "vue-router";
-import AddCar from "./components/AddCar.vue";
-import CarList from "./components/CarList.vue";
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router'; // If you're using Vue Router
+// import store from './store'; // If you're using Vuex
 
-Vue.use(Router);
+const app = createApp(App);
 
-export default new Router({
-  routes: [
-    { path: "/", component: CarList },
-    { path: "/add", component: AddCar },
-  ],
-});
+app.use(router); // Ensure router exists
+// app.use(store);  // Ensure store exists
+
+app.mount('#app');

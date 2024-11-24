@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     async addCar() {
-      const response = await fetch("/data/cars.json");
+      const response = await fetch("../data/cars.json");
       const cars = await response.json();
       cars.push(this.car);
 
