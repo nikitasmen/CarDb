@@ -31,7 +31,7 @@ git clone $REPO_URL
 # 4. cd /path/to/the/project
 cd $PROJECT_DIR
 
-git checkout webApp
+git checkout cliApp
 
 # 5. python -m venv venv
 python3 -m venv venv
