@@ -31,6 +31,8 @@ git clone $REPO_URL
 # 4. cd /path/to/the/project
 cd $PROJECT_DIR
 
+git checkout webApp
+
 # 5. python -m venv venv
 python3 -m venv venv
 
@@ -40,6 +42,12 @@ source venv/bin/activate
 # 7. pip install tkinter pyinstaller
 pip install tkinter 
 pip install pyinstaller
+
+#check if main.py exists
+if [ ! -f "main.py" ]; then
+    echo "main.py not found. Exiting..."
+    exit 1
+fi
 
 # 8. pyinstaller --onefile --windowed main.py
 pyinstaller --onefile --windowed main.py
