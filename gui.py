@@ -1,21 +1,26 @@
-import tkinter as tk
-import json
-from tkinter import ttk, messagebox, simpledialog
-import webbrowser
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QVBoxLayout, QFormLayout, QLineEdit, QPushButton, 
+    QMessageBox, QTableWidget, QTableWidgetItem, QHeaderView, QInputDialog
+)
+import sys
 from car_tracker import CarTracker
+import webbrowser
 
-class CarTrackerApp:
-    def __init__(self, root):
+class CarTrackerApp(QWidget):
+    def __init__(self):
+        super().__init__()
+
         self.car_tracker = CarTracker()
+        self.init_ui()
 
-        self.root = root
-        self.root.title("Car Tracker Application")
-        self.root.geometry("900x600")
-        self.root.resizable(False, False)
+    def init_ui(self):
+        self.setWindowTitle("Car Tracker Application")
+        self.setGeometry(100, 100, 800, 500)
 
-        self._create_widgets()
+        layout = QVBoxLayout()
+        form_layout = QFormLayout()
 
-    def _create_widgets(self):
+        self.inputs = {}
         fields = [
             ("Model Name", "modelName"),
             ("Manufacturer", "manufacturer"),
@@ -25,104 +30,89 @@ class CarTrackerApp:
             ("Model Manufacturer", "modelManufact"),
             ("More Info (URL)", "more"),
         ]
-        self.entries = {}
 
-        for idx, (label_text, field_name) in enumerate(fields):
-            label = tk.Label(self.root, text=label_text, font=("Arial", 10))
-            label.grid(row=idx, column=0, padx=10, pady=5, sticky=tk.W)
+        for label, key in fields:
+            entry = QLineEdit(self)
+            form_layout.addRow(label, entry)
+            self.inputs[key] = entry
 
-            entry = tk.Entry(self.root, width=50)
-            entry.grid(row=idx, column=1, padx=10, pady=5)
-            self.entries[field_name] = entry
+        layout.addLayout(form_layout)
 
-        button_frame = tk.Frame(self.root)
-        button_frame.grid(row=len(fields), column=0, columnspan=2, pady=20)
+        self.add_button = QPushButton("Add Car")
+        self.add_button.clicked.connect(self.add_car)
+        layout.addWidget(self.add_button)
 
-        add_button = tk.Button(button_frame, text="Add Car", width=15, command=self.add_car)
-        add_button.pack(side=tk.LEFT, padx=5)
+        self.display_button = QPushButton("Display All Cars")
+        self.display_button.clicked.connect(self.display_all)
+        layout.addWidget(self.display_button)
 
-        display_button = tk.Button(button_frame, text="Display All Cars", width=15, command=self.display_all)
-        display_button.pack(side=tk.LEFT, padx=5)
+        self.search_button = QPushButton("Search Car")
+        self.search_button.clicked.connect(self.search_car)
+        layout.addWidget(self.search_button)
 
-        search_button = tk.Button(button_frame, text="Search Car", width=15, command=self.search_car)
-        search_button.pack(side=tk.LEFT, padx=5)
+        self.delete_button = QPushButton("Delete Car")
+        self.delete_button.clicked.connect(self.delete_car)
+        layout.addWidget(self.delete_button)
 
-        delete_button = tk.Button(button_frame, text="Delete Car", width=15, command=self.delete_car)
-        delete_button.pack(side=tk.LEFT, padx=5)
+        self.table = QTableWidget(self)
+        self.table.setColumnCount(7)
+        self.table.setHorizontalHeaderLabels([
+            "Model Name", "Manufacturer", "Year", 
+            "Origin Country", "Category", "Model Manufacturer", "More Info"
+        ])
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.table.cellDoubleClicked.connect(self.open_url)
 
-        self.tree = ttk.Treeview(self.root, columns=("model", "manufacturer", "year", "origin", "category", "manufact", "more"), show="headings", height=10)
-        self.tree.grid(row=len(fields) + 1, column=0, columnspan=2, padx=10, pady=10)
-
-        self.tree.heading("model", text="Model Name")
-        self.tree.heading("manufacturer", text="Manufacturer")
-        self.tree.heading("year", text="Year")
-        self.tree.heading("origin", text="Origin Country")
-        self.tree.heading("category", text="Category")
-        self.tree.heading("manufact", text="Model Manufacturer")
-        self.tree.heading("more", text="More Info (URL)")
-
-        for col in ("model", "manufacturer", "year", "origin", "category", "manufact", "more"):
-            self.tree.column(col, width=120, anchor=tk.CENTER)
-
-        self.tree.bind("<Double-1>", self.on_double_click)
+        layout.addWidget(self.table)
+        self.setLayout(layout)
 
     def add_car(self):
-        car_details = {field: entry.get() for field, entry in self.entries.items()}
+        car_details = {key: entry.text() for key, entry in self.inputs.items()}
 
         if all(car_details.values()):
             self.car_tracker.addData(**car_details)
-            messagebox.showinfo("Success", "Car added successfully!")
+            QMessageBox.information(self, "Success", "Car added successfully!")
             self.clear_entries()
         else:
-            messagebox.showwarning("Input Error", "Please fill in all fields.")
+            QMessageBox.warning(self, "Input Error", "Please fill in all fields.")
 
     def display_all(self):
-        for item in self.tree.get_children():
-            self.tree.delete(item)
-
+        self.table.setRowCount(0)
         cars = self.car_tracker.displayData()
+        
         if cars:
-            for car in cars:
-                self.tree.insert("", tk.END, values=(
-                    car["modelName"],
-                    car["manufacturer"],
-                    car["year"],
-                    car["originCountry"],
-                    car["category"],
-                    car["modelManufact"],
-                    car["more"]
-                ))
+            for row_idx, car in enumerate(cars):
+                self.table.insertRow(row_idx)
+                for col_idx, key in enumerate(car.values()):
+                    self.table.setItem(row_idx, col_idx, QTableWidgetItem(str(key)))
         else:
-            messagebox.showinfo("No Data", "No cars to display.")
-
-    def on_double_click(self, event):
-        item = self.tree.identify('item', event.x, event.y)
-        if item:
-            selected_values = self.tree.item(item, "values")
-            url = selected_values[-1]
-            if url.startswith("http://") or url.startswith("https://"):
-                webbrowser.open(url)
-            else:
-                messagebox.showerror("Invalid URL", "The selected 'More Info' value is not a valid URL.")
+            QMessageBox.information(self, "No Data", "No cars to display.")
 
     def search_car(self):
-        modelName = simpledialog.askstring("Search Car", "Enter the model name:")
-        if modelName:
-            car = self.car_tracker.search(modelName)
+        model_name, ok = QInputDialog.getText(self, "Search Car", "Enter the model name:")
+        if ok and model_name:
+            car = self.car_tracker.search(model_name)
             if car:
-                messagebox.showinfo("Car Found", json.dumps(car, indent=4))
+                QMessageBox.information(self, "Car Found", str(car))
             else:
-                messagebox.showinfo("Not Found", "Car not found.")
+                QMessageBox.warning(self, "Not Found", "Car not found.")
 
     def delete_car(self):
-        modelName = simpledialog.askstring("Delete Car", "Enter the model name to delete:")
-        if modelName:
-            if self.car_tracker.deleteData(modelName):
-                messagebox.showinfo("Success", "Car deleted successfully!")
+        model_name, ok = QInputDialog.getText(self, "Delete Car", "Enter the model name:")
+        if ok and model_name:
+            if self.car_tracker.deleteData(model_name):
+                QMessageBox.information(self, "Success", "Car deleted successfully!")
                 self.display_all()
             else:
-                messagebox.showinfo("Not Found", "Car not found.")
+                QMessageBox.warning(self, "Not Found", "Car not found.")
+
+    def open_url(self, row, col):
+        url = self.table.item(row, 6).text()
+        if url.startswith("http://") or url.startswith("https://"):
+            webbrowser.open(url)
+        else:
+            QMessageBox.critical(self, "Invalid URL", "The selected URL is not valid.")
 
     def clear_entries(self):
-        for entry in self.entries.values():
-            entry.delete(0, tk.END)
+        for entry in self.inputs.values():
+            entry.clear()

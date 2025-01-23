@@ -39,8 +39,8 @@ python3 -m venv venv
 # 6. (bash) venv\Scripts\activate
 source venv/bin/activate
 
-# 7. pip install tkinter pyinstaller
-pip install tkinter 
+# 7. pip install pyqt5 pyinstaller
+pip install pyqt5 
 pip install pyinstaller
 
 #check if main.py exists

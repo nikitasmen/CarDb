@@ -3,7 +3,7 @@ import json
 
 class CarTracker:
     def __init__(self):
-        self.target = "car.json"
+        self.target = "./data/car.json"
         if not os.path.exists(self.target):
             with open(self.target, 'w') as f:
                 json.dump([], f)
