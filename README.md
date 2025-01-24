@@ -56,14 +56,7 @@ Simple CRUD application for miniature car collection.
 
     1. Install Python 3
     2. Install Git from [here](https://git-scm.com/downloads)
-    3. Configure Git:
-
-        ```sh
-        git config --global user.name "username"
-        git config --global user.email "email"
-        ```
-
-    4. Run the setup script:
+    3. Run the setup script:
 
         ```sh
         ./setup.sh
