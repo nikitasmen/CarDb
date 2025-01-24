@@ -96,9 +96,9 @@ class CarTrackerApp(QWidget):
                     f"Model Name: {car['modelName']}\n"
                     f"Manufacturer: {car['manufacturer']}\n"
                     f"Year: {car['year']}\n"
-                    f"Origin Country: {car['origincountry']}\n"
+                    f"Origin Country: {car['originCountry']}\n"
                     f"Category: {car['category']}\n"
-                    f"Model Manufacturing Details: {car['modelmanufact']}\n"
+                    f"Model Manufacturing Details: {car['modelManufact']}\n"
                     f"More Info: {car['more']}"
                     for car in cars
                 )
