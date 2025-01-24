@@ -64,7 +64,3 @@ class Cli:
         print("  search  - Search for a car")
         print("  delete  - Delete a car")
         print("  exit    - Exit the program")
-
-# Allow running the script directly
-if __name__ == "__main__":
-    cli()
