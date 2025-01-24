@@ -1,4 +1,3 @@
-@echo off
 
 :: Project details
 set "PROJECT_DIR=CarDb"
