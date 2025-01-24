@@ -37,11 +37,12 @@ class CarTracker:
             return json.load(f)
 
     def search(self, modelName):
+        results = []
         with open(self.target, 'r') as f:
             for data in json.load(f):
-                if data["modelName"].lower() == modelName.lower():
-                    return data
-        return None
+                if modelName.lower() in data["modelName"].lower():
+                    results.append(data)
+        return results if results else None
 
     def deleteData(self, modelName):
         with open(self.target, 'r') as f:

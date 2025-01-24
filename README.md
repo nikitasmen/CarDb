@@ -13,7 +13,7 @@ Simple CRUD application for miniature car collection.
 
 1. Install Python 3
 
-    ### A. Manual Setup
+    ### 2a. Manual Setup
 
     1. Download zip/clone the repo
     2. Extract files
@@ -52,7 +52,7 @@ Simple CRUD application for miniature car collection.
     **Notice:**
     After installation, don't change the path of the project.
 
-    #### B: Automatic Setup:
+    #### 2b: Automatic Setup:
 
     1. Install Python 3
     2. Install Git from [here](https://git-scm.com/downloads)

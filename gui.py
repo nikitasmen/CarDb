@@ -90,9 +90,19 @@ class CarTrackerApp(QWidget):
     def search_car(self):
         model_name, ok = QInputDialog.getText(self, "Search Car", "Enter the model name:")
         if ok and model_name:
-            car = self.car_tracker.search(model_name)
-            if car:
-                QMessageBox.information(self, "Car Found", str(car))
+            cars = self.car_tracker.search(model_name)
+            if cars:
+                car_details = "\n\n".join(
+                    f"Model Name: {car['modelName']}\n"
+                    f"Manufacturer: {car['manufacturer']}\n"
+                    f"Year: {car['year']}\n"
+                    f"Origin Country: {car['origincountry']}\n"
+                    f"Category: {car['category']}\n"
+                    f"Model Manufacturing Details: {car['modelmanufact']}\n"
+                    f"More Info: {car['more']}"
+                    for car in cars
+                )
+                QMessageBox.information(self, "Car Found", car_details)
             else:
                 QMessageBox.warning(self, "Not Found", "Car not found.")
 
