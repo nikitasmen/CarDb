@@ -45,7 +45,6 @@ class CarTrackerApp(QWidget):
         self.display_button = QPushButton("Display All Cars")
         self.display_button.clicked.connect(self.display_all)
         layout.addWidget(self.display_button)
-
         self.search_button = QPushButton("Search Car")
         self.search_button.clicked.connect(self.search_car)
         layout.addWidget(self.search_button)

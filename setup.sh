@@ -41,6 +41,8 @@ source venv/bin/activate
 
 # 7. pip install pyqt5 pyinstaller
 pip install pyqt5 
+pip install tabulate 
+pip install click
 pip install pyinstaller
 
 #check if main.py exists
