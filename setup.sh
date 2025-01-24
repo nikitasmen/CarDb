@@ -52,11 +52,31 @@ if [ -f "$SHORTCUT_DIR/carDb" ]; then
     sudo rm -f "$SHORTCUT_DIR/carDb"
 fi
 
-# Clone the repository
-git clone $REPO_URL
+# Remove existing project if it exists
+if [ -d "$PROJECT_DIR" ]; then
+    echo "Project directory $PROJECT_DIR already exists. Deleting it..."
+    sudo rm -rf "$PROJECT_DIR"
+fi
+
+# Check if git is installed
+if ! command -v git &> /dev/null; then
+    echo "Git is not installed. Installing Git..."
+    sudo apt-get update
+    sudo apt-get install -y git
+    read -p "Enter your Git username: " username
+    git config --global user.name "$username"
+    read -p "Enter your Git email: " email
+    git config --global user.email "$email"
+    
+else
+    echo "Git is already installed."
+fi
+
+# Clone the repository using git
+git clone https://github.com/nikitasmen/CarDb.git "$PROJECT_DIR"
 
 # Navigate to the project directory
-cd $PROJECT_DIR || { echo "Failed to enter directory $PROJECT_DIR"; exit 1; }
+cd "$PROJECT_DIR" || { echo "Failed to enter directory $PROJECT_DIR"; exit 1; }
 
 # Checkout the correct branch
 git checkout cliApp
