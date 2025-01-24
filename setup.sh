@@ -82,7 +82,6 @@ git clone https://github.com/nikitasmen/CarDb.git "$PROJECT_DIR"
 # Navigate to the project directory
 cd "$PROJECT_DIR" || { echo "Failed to enter directory $PROJECT_DIR"; exit 1; }
 
-
 # Create a Python virtual environment
 python3 -m venv venv
 
@@ -92,7 +91,6 @@ source venv/bin/activate
 # Install dependencies
 pip install pyqt5 
 pip install tabulate 
-pip install click
 pip install pyinstaller
 
 # Check if main.py exists

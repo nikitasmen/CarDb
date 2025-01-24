@@ -38,7 +38,7 @@ Simple CRUD application for miniature car collection.
     6. Install required packages:
 
         ```sh
-        pip install pyqt5 pyinstaller
+        pip install pyqt5 pyinstaller tabulate
         ```
 
     7. (Optional) Build the executable:
