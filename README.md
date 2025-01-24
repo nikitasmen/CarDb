@@ -1,36 +1,70 @@
 # CarDb
 
-Simple Crud application for miniature car collection. 
+Simple CRUD application for miniature car collection.
 
 ## Requirements
-    1. python 3 
-        - pyqt5
-        - pyinstaller (Optional)
-    2. Installer need github account
 
-## Installation 
-    1. Install python3 
-    2. Download zip/ clone the repo
-    3. Extract files 
-    4. cd /path/to/the/project
-    5. python -m venv venv 
-    6. (bash) venv\Scripts\activate  
-    7. pip install pyqt5 pyinstaller
-    8. pyinstaller --onefile --windowed main.py (Optional)
-        - create shortcut for ./dist/main 
-    !! Notice:
-        After installation, don't change path of the project. 
+1. Python 3
+    - PyQt5
+    - PyInstaller (Optional)
+2. Git account
 
-    Or 
-        Run setup 
-            -Windows untested 
-            -Require git account
+## Installation
 
-For web app:
-    -Requirements: 
-        -flask
+1. Install Python 3
 
+    ### A. Manual Setup
 
-    Execution: 
-        - python ./app.py
-        - open localhost 
+    1. Download zip/clone the repo
+    2. Extract files
+    3. Navigate to the project directory:
+
+        ```sh
+        cd /path/to/the/project
+        ```
+
+    4. Create a virtual environment:
+
+        ```sh
+        python -m venv venv
+        ```
+
+    5. Activate the virtual environment:
+
+        ```sh
+        source venv/bin/activate
+        ```
+
+    6. Install required packages:
+
+        ```sh
+        pip install pyqt5 pyinstaller
+        ```
+
+    7. (Optional) Build the executable:
+
+        ```sh
+        pyinstaller --onefile --windowed main.py
+        ```
+
+        - Create a shortcut for `./dist/main`
+
+    **Notice:**
+    After installation, don't change the path of the project.
+
+    #### B: Automatic Setup:
+
+    1. Install Python 3
+    2. Install Git from [here](https://git-scm.com/downloads)
+    3. Configure Git:
+
+        ```sh
+        git config --global user.name "username"
+        git config --global user.email "email"
+        ```
+
+    4. Run the setup script:
+
+        ```sh
+        ./setup.sh
+        ```
