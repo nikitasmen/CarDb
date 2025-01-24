@@ -77,7 +77,7 @@ if ! git config --get user.email; then
 fi
 
 # Clone the repository using git
-git clone https://github.com/nikitasmen/CarDb.git "$PROJECT_DIR"
+git clone $REPO_URL "$PROJECT_DIR"
 
 # Navigate to the project directory
 cd "$PROJECT_DIR" || { echo "Failed to enter directory $PROJECT_DIR"; exit 1; }
