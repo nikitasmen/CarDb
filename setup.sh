@@ -62,14 +62,18 @@ fi
 if ! command -v git &> /dev/null; then
     echo "Git is not installed. Installing Git..."
     sudo apt-get update
-    sudo apt-get install -y git
+    sudo apt-get install -y git    
+else
+    echo "Git is already installed."
+fi
+
+#check git credentials 
+if ! git config --get user.email; then
+    echo "Please configure your git credentials before proceeding."
     read -p "Enter your Git username: " username
     git config --global user.name "$username"
     read -p "Enter your Git email: " email
     git config --global user.email "$email"
-    
-else
-    echo "Git is already installed."
 fi
 
 # Clone the repository using git
