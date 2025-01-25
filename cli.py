@@ -13,6 +13,7 @@ class Cli:
             self.process_command(command)
 
     def process_command(self, command): 
+        command = command.strip().lower()
         if command == "--help":
             self.print_help()
         elif command == "add":
@@ -23,6 +24,8 @@ class Cli:
             self.search_car()
         elif command == "delete":
             self.delete_car()
+        elif command == "import": 
+            self.import_data()
         else:
             print("Invalid command. Type '--help' to see the available commands.")
 
@@ -37,6 +40,11 @@ class Cli:
         self.tracker.addData(modelname, manufacturer, year, origincountry, category, modelmanufact, more)
         print(f"Car '{modelname}' added successfully!")
 
+    def import_data(self):
+        filename = input("Enter filename to import data: ")
+        self.tracker.importData(filename)
+        print(f"Data imported successfully!")
+        
     def display_all_cars(self):
         cars = self.tracker.displayData()
         print("All cars:", len(cars), "found.", cars)

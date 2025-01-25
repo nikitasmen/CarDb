@@ -54,3 +54,24 @@ class CarTracker:
                 self.saveTarget(data)
                 return True
         return False
+
+    def importData(self, filename):
+        try:
+            with open(filename, 'r') as f:
+                data = json.load(f)
+        except FileNotFoundError:
+            print("File not found.")
+            return
+        
+        try:
+            with open(self.target, 'r') as f:
+                current_data = json.load(f)
+        except FileNotFoundError:
+            current_data = []
+
+        current_data.extend(data)
+
+        with open(self.target, 'w') as f:
+            json.dump(current_data, f, indent=4)
+
+        print("Data imported successfully!")

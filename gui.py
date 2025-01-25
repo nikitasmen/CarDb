@@ -53,6 +53,11 @@ class CarTrackerApp(QWidget):
         self.delete_button.clicked.connect(self.delete_car)
         layout.addWidget(self.delete_button)
 
+        self.import_button = QPushButton("Import Data") 
+        self.import_button.clicked.connect(self.import_data)
+        layout.addWidget(self.import_button)
+        
+        
         self.table = QTableWidget(self)
         self.table.setColumnCount(7)
         self.table.setHorizontalHeaderLabels([
@@ -125,3 +130,10 @@ class CarTrackerApp(QWidget):
     def clear_entries(self):
         for entry in self.inputs.values():
             entry.clear()
+
+    def import_data(self):
+        filename, ok = QInputDialog.getText(self, "Import Data", "Enter the filename:")
+        if ok and filename:
+            self.car_tracker.importData(filename)
+            QMessageBox.information(self, "Success", "Data imported successfully!")
+            self.display_all()
