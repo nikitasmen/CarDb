@@ -39,6 +39,7 @@ class Cli:
 
     def display_all_cars(self):
         cars = self.tracker.displayData()
+        print("All cars:", len(cars), "found.", cars)
         if cars:
             print(tabulate(cars, headers="keys", tablefmt="grid"))
         else:
@@ -48,7 +49,7 @@ class Cli:
         modelname = input("Enter model name to search: ")
         car = self.tracker.search(modelname)
         if car:
-            print(tabulate([car], headers="keys", tablefmt="grid"))
+            print(tabulate(car, headers="keys", tablefmt="grid"))
         else:
             print("Car not found.")
 
