@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QFormLayout, QLineEdit, QPushButton, 
-    QMessageBox, QTableWidget, QTableWidgetItem, QHeaderView, QInputDialog
+    QMessageBox, QTableWidget, QTableWidgetItem, QHeaderView, QInputDialog, QFileDialog
 )
 import sys
 from car_tracker import CarTracker
@@ -132,8 +132,10 @@ class CarTrackerApp(QWidget):
             entry.clear()
 
     def import_data(self):
-        filename, ok = QInputDialog.getText(self, "Import Data", "Enter the filename:")
-        if ok and filename:
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        filename, _ = QFileDialog.getOpenFileName(self, "Import Data", "", "JSON Files (*.json);;All Files (*)", options=options)
+        if filename:
             self.car_tracker.importData(filename)
             QMessageBox.information(self, "Success", "Data imported successfully!")
             self.display_all()
