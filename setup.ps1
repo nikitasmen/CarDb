@@ -51,7 +51,6 @@ git clone %REPO_URL% "%PROJECT_DIR%"
 :: Navigate to the project directory
 cd "%PROJECT_DIR%" || exit /b 1
 
-git checkout cliApp
 
 :: Create a Python virtual environment
 python -m venv venv
