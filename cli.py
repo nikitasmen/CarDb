@@ -42,9 +42,15 @@ class Cli:
 
     def import_data(self):
         filename = input("Enter filename to import data: ")
-        self.tracker.importData(filename)
-        print(f"Data imported successfully!")
-        
+        filetype = input("Enter file type (json/csv): ").lower()
+        if filetype == "json":
+            self.tracker.importData(filename)
+        elif filetype == "csv":
+            self.tracker.importDataCSV(filename)
+        else:
+            print("Unsupported file type.")
+        print("Data imported successfully!")
+   
     def display_all_cars(self):
         cars = self.tracker.displayData()
         print("All cars:", len(cars), "found.", cars)

@@ -1,5 +1,6 @@
 import os
 import json
+import csv
 
 class CarTracker:
     def __init__(self):
@@ -61,7 +62,7 @@ class CarTracker:
                 data = json.load(f)
         except FileNotFoundError:
             print("File not found.")
-            return
+            return False
         
         try:
             with open(self.target, 'r') as f:
@@ -74,4 +75,23 @@ class CarTracker:
         with open(self.target, 'w') as f:
             json.dump(current_data, f, indent=4)
 
-        print("Data imported successfully!")
+        
+    def importDataCSV(self, filename):
+        try:
+            with open(filename, 'r') as f:
+                reader = csv.DictReader(f)
+                data = list(reader)
+        except FileNotFoundError:
+            print("File not found.")
+            return False
+
+        try:
+            with open(self.target, 'r') as f:
+                current_data = json.load(f)
+        except FileNotFoundError:
+            current_data = []
+
+        current_data.extend(data)
+
+        with open(self.target, 'w') as f:
+            json.dump(current_data, f, indent=4)
