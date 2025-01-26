@@ -23,13 +23,13 @@ class CarFileHandler:
                 return []
 
     def cleanup(self, data):
-        allowed_keys = ["modelName", "manufacturer", "year", "originCountry", "category", "modelManufact", "more"]
+        allowed_keys = ["model", "manufacturer", "year", "country_of_origin", "category", "replica_model", "info"]
+        cleaned_data = []
         for car in data:
-            for key in list(car.keys()):
-                if key not in allowed_keys:
-                    del car[key]
-         
-        return data
+            car = {key: car[key] for key in car if key in allowed_keys}
+            if car:
+                cleaned_data.append(car)
+        return cleaned_data
         
     def importDataJSON(self, filename):
         try:
@@ -64,9 +64,17 @@ class CarFileHandler:
         print("Data imported successfully from CSV!")
         return True
 
+
     def importDataExcel(self, filename):
         try:
-            df = pd.read_excel(filename, engine='openpyxl')
+            df = pd.read_excel(filename, engine='openpyxl')  
+            df.dropna(how='all', inplace=True)
+            
+            df.columns = [col.lower().replace(' ', '_') for col in df.columns]
+            if df.columns[0].startswith("Unnamed"):
+                df.columns = [f"Column_{i}" for i in range(len(df.columns))]  # Generic column names
+
+            print(df.head())  # Check the cleaned dataframe
             data = df.to_dict(orient='records')
         except FileNotFoundError:
             print("File not found.")
@@ -80,5 +88,3 @@ class CarFileHandler:
         self.saveTarget(current_data)
         print("Data imported successfully from Excel!")
         return True
-
-    

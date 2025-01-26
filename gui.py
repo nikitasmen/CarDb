@@ -98,13 +98,13 @@ class CarTrackerApp(QWidget):
             cars = self.car_tracker.search(model_name)
             if cars:
                 car_details = "\n\n".join(
-                    f"Model Name: {car['modelName']}\n"
+                    f"Model Name: {car['model']}\n"
                     f"Manufacturer: {car['manufacturer']}\n"
                     f"Year: {car['year']}\n"
-                    f"Origin Country: {car['originCountry']}\n"
+                    f"Origin Country: {car['country_of_origin']}\n"
                     f"Category: {car['category']}\n"
-                    f"Model Manufacturing Details: {car['modelManufact']}\n"
-                    f"More Info: {car['more']}"
+                    f"Model Manufacturing Details: {car['replica_model']}\n"
+                    f"More Info: {car['info']}"
                     for car in cars
                 )
                 QMessageBox.information(self, "Car Found", car_details)
@@ -134,7 +134,7 @@ class CarTrackerApp(QWidget):
     def import_data(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
-        filename, _ = QFileDialog.getOpenFileName(self, "Import Data", "", "JSON Files (*.json);;CSV Files(*.csv);;All Files (*)", options=options)
+        filename, _ = QFileDialog.getOpenFileName(self, "Import Data", "", "JSON Files (*.json);;CSV Files(*.csv);;XLSX Files((*.xlsx);;All Files (*)", options=options)
         if filename:
             if self.car_tracker.importData(filename): 
                 QMessageBox.information(self, "Success", "Data imported successfully!")

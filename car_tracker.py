@@ -6,13 +6,13 @@ class CarTracker:
 
     def addData(self, modelName, manufacturer, year, originCountry, category, modelManufact, more):
         carDetails = {
-            "modelName": modelName,
+            "model": modelName,
             "manufacturer": manufacturer,
             "year": year,
-            "originCountry": originCountry,
+            "country_of_origin": originCountry,
             "category": category,
-            "modelManufact": modelManufact,
-            "more": more
+            "replica_model": modelManufact,
+            "info": more
         }
 
         data = self.fileHandler.displayData()
@@ -22,13 +22,13 @@ class CarTracker:
     def search(self, modelName):
         results = []
         for data in self.fileHandler.displayData():
-            if modelName.lower() in data["modelName"].lower():
+            if modelName.lower() in data["model"].lower():
                 results.append(data)
         return results if results else None
 
     def deleteData(self, modelName):
         data = self.fileHandler.displayData()
-        filtered_data = [car for car in data if car["modelName"].lower() != modelName.lower()]
+        filtered_data = [car for car in data if car["model"].lower() != modelName.lower()]
 
         if len(filtered_data) == len(data):
             return False

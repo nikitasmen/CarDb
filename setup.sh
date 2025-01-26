@@ -92,6 +92,7 @@ source venv/bin/activate
 pip install pyqt5 
 pip install tabulate 
 pip install pyinstaller
+pip install openpyxl
 
 # Check if main.py exists
 if [ ! -f "main.py" ]; then
