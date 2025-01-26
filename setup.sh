@@ -76,14 +76,6 @@ if ! git config --get user.email; then
     git config --global user.email "$email"
 fi
 
-# Clone the repository using git
-git clone https://github.com/nikitasmen/CarDb.git "$PROJECT_DIR"
-
-# Navigate to the project directory
-cd "$PROJECT_DIR" || { echo "Failed to enter directory $PROJECT_DIR"; exit 1; }
-
-git checkout main 
-
 # Create a Python virtual environment
 python3 -m venv venv
 
