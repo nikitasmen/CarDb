@@ -136,12 +136,7 @@ class CarTrackerApp(QWidget):
         options |= QFileDialog.ReadOnly
         filename, _ = QFileDialog.getOpenFileName(self, "Import Data", "", "JSON Files (*.json);;CSV Files(*.csv);;All Files (*)", options=options)
         if filename:
-            if filename.endswith('.json'):
-                self.car_tracker.importData(filename)
-                QMessageBox.information(self, "Success", "JSON data imported successfully!")
-            elif filename.endswith('.csv'):
-                self.car_tracker.importDataCSV(filename)
-                QMessageBox.information(self, "Success", "CSV data imported successfully!")
+            if self.car_tracker.importData(filename): 
+                QMessageBox.information(self, "Success", "Data imported successfully!")
             else:
-                QMessageBox.warning(self, "Unsupported File", "The selected file type is not supported.")
-            self.display_all()
+                QMessageBox.warning(self, "Error", "Error importing data.")

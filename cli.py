@@ -38,22 +38,14 @@ class Cli:
         modelmanufact = input("Enter model manufacturing details: ")
         more = input("Enter more info link: ")
         self.tracker.addData(modelname, manufacturer, year, origincountry, category, modelmanufact, more)
-        print(f"Car '{modelname}' added successfully!")
 
     def import_data(self):
         filename = input("Enter filename to import data: ")
-        filetype = input("Enter file type (json/csv): ").lower()
-        if filetype == "json":
-            self.tracker.importData(filename)
-        elif filetype == "csv":
-            self.tracker.importDataCSV(filename)
-        else:
-            print("Unsupported file type.")
-        print("Data imported successfully!")
+        if (self.tracker.importData(filename)):
+            print("Data imported successfully!")
    
     def display_all_cars(self):
         cars = self.tracker.displayData()
-        print("All cars:", len(cars), "found.", cars)
         if cars:
             print(tabulate(cars, headers="keys", tablefmt="grid"))
         else:
@@ -69,8 +61,8 @@ class Cli:
 
     def delete_car(self):
         modelname = input("Enter model name to delete: ")
-        self.tracker.deleteData(modelname)
-        print(f"Car '{modelname}' deleted successfully!")
+        if self.tracker.deleteData(modelname):
+            print(f"Car '{modelname}' deleted successfully!")
 
     def print_help(self):
         print("Available commands:")
