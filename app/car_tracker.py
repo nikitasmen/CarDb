@@ -17,8 +17,8 @@ class CarTracker:
 
         data = self.fileHandler.displayData()
         data.append(carDetails)
-        self.fileHandler.saveTarget(data)
-
+        return self.fileHandler.saveTarget(data)
+    
     def search(self, modelName):
         results = []
         for data in self.fileHandler.displayData():
@@ -33,8 +33,7 @@ class CarTracker:
         if len(filtered_data) == len(data):
             return False
 
-        self.fileHandler.saveTarget(filtered_data)
-        return True
+        return self.fileHandler.saveTarget(filtered_data)
 
     def importData(self, filename):
         if filename.endswith('.json'):

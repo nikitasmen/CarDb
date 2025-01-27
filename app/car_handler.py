@@ -20,7 +20,7 @@ class CarFileHandler:
 
     def saveTarget(self, data):
         data = self.cleanup(data)
-        FileIO.write_json(self.target, data)
+        return FileIO.write_json(self.target, data)
 
     def displayData(self):
         return FileIO.read_json(self.target)
@@ -44,10 +44,10 @@ class CarFileHandler:
 
         current_data = self.displayData()
         current_data.extend(data)
-        self.saveTarget(current_data)
-        print("Data imported successfully from JSON!")
-        
-        return True
+        if self.saveTarget(current_data): 
+            print("Data imported successfully from JSON!")
+            return True
+        return False
 
     def importDataCSV(self, filename):
         try:
@@ -63,10 +63,10 @@ class CarFileHandler:
 
         current_data = self.displayData()
         current_data.extend(data)
-        self.saveTarget(current_data)
-        print("Data imported successfully from CSV!")
-        return True
-
+        if self.saveTarget(current_data): 
+            print("Data imported successfully from CSV!")
+            return True
+        return False
 
     def importDataExcel(self, filename):
         try:
@@ -88,6 +88,7 @@ class CarFileHandler:
 
         current_data = self.displayData()
         current_data.extend(data)
-        self.saveTarget(current_data)
-        print("Data imported successfully from Excel!")
-        return True
+        if self.saveTarget(current_data):
+            print("Data imported successfully from Excel!")
+            return True
+        return False

@@ -15,5 +15,10 @@ class FileIO:
 
     @staticmethod
     def write_json(file_path, data):
-        with open(file_path, 'w') as f:
-            json.dump(data, f, indent=4)
+        try:
+            with open(file_path, 'w') as f:
+                json.dump(data, f, indent=4)
+                return True 
+        except Exception as e:
+            print(e)
+            return False
