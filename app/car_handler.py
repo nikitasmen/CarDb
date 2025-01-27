@@ -3,6 +3,7 @@ import json
 import csv
 import pandas as pd
 import sys
+from data import FileIO
 
 class CarFileHandler:
     def __init__(self, target=None):
@@ -19,15 +20,10 @@ class CarFileHandler:
 
     def saveTarget(self, data):
         data = self.cleanup(data)
-        with open(self.target, 'w') as f:
-            json.dump(data, f, indent=4)
+        FileIO.write_json(self.target, data)
 
     def displayData(self):
-        with open(self.target, 'r') as f:
-            try:
-                return json.load(f)
-            except json.JSONDecodeError:
-                return []
+        return FileIO.read_json(self.target)
 
     def cleanup(self, data):
         allowed_keys = ["model", "manufacturer", "year", "country_of_origin", "category", "replica_model", "info"]
