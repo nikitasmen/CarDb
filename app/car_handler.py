@@ -1,10 +1,17 @@
-import os 
-import json 
-import csv 
-import pandas as pd 
+import os
+import json
+import csv
+import pandas as pd
+import sys
 
 class CarFileHandler:
-    def __init__(self, target="car.json"):
+    def __init__(self, target=None):
+        if target is None:
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            # Adjust the path to work in both development and packaged environments
+            if getattr(sys, 'frozen', False):
+                base_dir = sys._MEIPASS
+            target = os.path.join(base_dir, 'data/car.json')
         self.target = target
         if not os.path.exists(self.target):
             with open(self.target, 'w') as f:

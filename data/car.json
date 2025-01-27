@@ -1,0 +1,542 @@
+[
+    {
+        "model": "Aston Martin DBR1",
+        "manufacturer": "Aston Martin",
+        "year": 1956,
+        "country_of_origin": "UK",
+        "category": "Racing",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Aston_Martin_DBR1"
+    },
+    {
+        "model": "Aston Martin DBS Volants",
+        "manufacturer": "Aston Martin",
+        "year": 2009,
+        "country_of_origin": "UK",
+        "category": "Coupe",
+        "replica_model": "Matchbox",
+        "info": "https://www.astonmartin.com/en/models/dbs-volante"
+    },
+    {
+        "model": "Auburn Speedster 851",
+        "manufacturer": "Auburn",
+        "year": 1936,
+        "country_of_origin": "USA",
+        "category": "Roadster",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Auburn_Speedster"
+    },
+    {
+        "model": "Buick Skylark",
+        "manufacturer": "Buick",
+        "year": 1953,
+        "country_of_origin": "USA",
+        "category": "Luxury Convertible",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Buick_Skylark"
+    },
+    {
+        "model": "Buick GSX",
+        "manufacturer": "Buick",
+        "year": 1970,
+        "country_of_origin": "USA",
+        "category": "Muscle Car",
+        "replica_model": "Hot Wheels",
+        "info": "https://www.hemmings.com/stories/article/1970-buick-gsx"
+    },
+    {
+        "model": "Cadillac Series 62",
+        "manufacturer": "Cadillac",
+        "year": 1941,
+        "country_of_origin": "USA",
+        "category": "Luxury Convertible",
+        "replica_model": "Matchbox",
+        "info": "https://www.motortrend.com/features/1941-cadillac-series-62-convertible-drive-review/"
+    },
+    {
+        "model": "Camaro SS 396",
+        "manufacturer": "Chevrolet",
+        "year": 1969,
+        "country_of_origin": "USA",
+        "category": "Muscle Car",
+        "replica_model": "Matchbox",
+        "info": "https://musclecars.howstuffworks.com/classic-muscle-cars/1969-chevrolet-camaro-ss-396.htm"
+    },
+    {
+        "model": "El Camino",
+        "manufacturer": "Chevrolet",
+        "year": 1970,
+        "country_of_origin": "USA",
+        "category": "Muscle Car",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Chevrolet_El_Camino"
+    },
+    {
+        "model": "Chevrolet Chevy",
+        "manufacturer": "Chevrolet",
+        "year": 1971,
+        "country_of_origin": "USA",
+        "category": "Coupe",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Chevrolet_Chevelle"
+    },
+    {
+        "model": "Chevrolet Corvette",
+        "manufacturer": "Chevrolet",
+        "year": 2020,
+        "country_of_origin": "USA",
+        "category": "Sport",
+        "replica_model": "Matchbox",
+        "info": "https://www.caranddriver.com/chevrolet/corvette-2020"
+    },
+    {
+        "model": "Plymouth De Luxe",
+        "manufacturer": "Chrysler",
+        "year": 1941,
+        "country_of_origin": "USA",
+        "category": "Sedan",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Plymouth_De_Luxe"
+    },
+    {
+        "model": "Space Cruiser",
+        "manufacturer": "Custom",
+        "year": "Unknown",
+        "country_of_origin": "USA",
+        "category": "Spaceship",
+        "replica_model": "Hot Wheels",
+        "info": "https://rickandmorty.fandom.com/wiki/Space_Cruiser"
+    },
+    {
+        "model": "Dodge Charger",
+        "manufacturer": "Dodge",
+        "year": 1966,
+        "country_of_origin": "USA",
+        "category": "Sedan",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Dodge_Charger_(1966)"
+    },
+    {
+        "model": "Dodge Viper RT/10",
+        "manufacturer": "Dodge",
+        "year": 1992,
+        "country_of_origin": "USA",
+        "category": "Roadster",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Dodge_Viper"
+    },
+    {
+        "model": "Dodge Charger R/T",
+        "manufacturer": "Dodge",
+        "year": 1999,
+        "country_of_origin": "USA",
+        "category": "Muscle Car",
+        "replica_model": "Hot Wheels",
+        "info": "https://batman-news.com/2014/08/27/gcpd-scene-batman-v-superman-dawn-justice-set-photos/"
+    },
+    {
+        "model": "Dodge Charger",
+        "manufacturer": "Dodge",
+        "year": 2018,
+        "country_of_origin": "USA",
+        "category": "Sedan",
+        "replica_model": "Matchbox",
+        "info": "https://www.edmunds.com/dodge/charger/2018/review/"
+    },
+    {
+        "model": "Ford Model B",
+        "manufacturer": "Ford",
+        "year": 1932,
+        "country_of_origin": "USA",
+        "category": "Coupe",
+        "replica_model": "Matchbox",
+        "info": "https://sco.wikipedia.org/wiki/Ford_Model_B_(1932)"
+    },
+    {
+        "model": "Ford Coupe",
+        "manufacturer": "Ford",
+        "year": 1936,
+        "country_of_origin": "USA",
+        "category": "Roadster",
+        "replica_model": "Matchbox",
+        "info": "https://www.motortrend.com/features/traditional-1936-ford-coupe-powered-by-vintage-ardun-heads-s-co-t-blower/"
+    },
+    {
+        "model": "Ford C900",
+        "manufacturer": "Ford",
+        "year": 1965,
+        "country_of_origin": "USA",
+        "category": "Truck",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Ford_C_series"
+    },
+    {
+        "model": "Ford Police Interceptor",
+        "manufacturer": "Ford",
+        "year": 1992,
+        "country_of_origin": "USA",
+        "category": "Sedan",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Ford_Police_Interceptor"
+    },
+    {
+        "model": "Ford Mustang Mach-E",
+        "manufacturer": "Ford",
+        "year": 2021,
+        "country_of_origin": "USA",
+        "category": "Coupe",
+        "replica_model": "Matchbox",
+        "info": "https://media.ford.com/content/fordmedia/fna/us/en/products/evs/mustang-mach-e/mustang-mach-e.html"
+    },
+    {
+        "model": "International Scout 4X4",
+        "manufacturer": "International Harvester",
+        "year": 1970,
+        "country_of_origin": "USA",
+        "category": "Off-road",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/International_Harvester_Scout"
+    },
+    {
+        "model": "Jeep Gladiator",
+        "manufacturer": "Jeep",
+        "year": 2020,
+        "country_of_origin": "USA",
+        "category": "Truck",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Jeep_Gladiator_(JT)"
+    },
+    {
+        "model": "Kurtis Sport Car",
+        "manufacturer": "Kurtis Kraft",
+        "year": 1949,
+        "country_of_origin": "USA",
+        "category": "Coupe",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Kurtis_Sport_Car"
+    },
+    {
+        "model": "Kurtis Sport Car",
+        "manufacturer": "Kurtis Kraft",
+        "year": 1949,
+        "country_of_origin": "USA",
+        "category": "Coupe",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Kurtis_Sport_Car"
+    },
+    {
+        "model": "Lincoln Continental",
+        "manufacturer": "Lincoln",
+        "year": 1964,
+        "country_of_origin": "USA",
+        "category": "Luxury",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Lincoln_Continental"
+    },
+    {
+        "model": "Mazda MX-5 Miata",
+        "manufacturer": "Mazda",
+        "year": 2015,
+        "country_of_origin": "Japan",
+        "category": "Roadster",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Mazda_MX-5"
+    },
+    {
+        "model": "Mclaren 720S Spider",
+        "manufacturer": "Mclaren",
+        "year": 2017,
+        "country_of_origin": "UK",
+        "category": "Sport",
+        "replica_model": "Matchbox",
+        "info": "https://cars.mclaren.com/en/super-series/mclaren-720s-spider"
+    },
+    {
+        "model": "Polaris Slingshot",
+        "manufacturer": "Polaris",
+        "year": 2014,
+        "country_of_origin": "USA",
+        "category": "Motorcycle",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Polaris_Slingshot"
+    },
+    {
+        "model": "Porsche 911 Carrera ",
+        "manufacturer": "Porsche",
+        "year": 1963,
+        "country_of_origin": "Germany",
+        "category": "Sport",
+        "replica_model": "Matchbox",
+        "info": "https://www.porsche.com/central-eastern-europe/en/_greece_/models/911/911-models/carrera-cabriolet/"
+    },
+    {
+        "model": "VW Beetle",
+        "manufacturer": "Volkswagen",
+        "year": 1962,
+        "country_of_origin": "Germany",
+        "category": "Compact",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Volkswagen_Beetle"
+    },
+    {
+        "model": "Auburn Speedster 851 (2)",
+        "manufacturer": "Auburn",
+        "year": 1936,
+        "country_of_origin": "USA",
+        "category": "Roadster",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Auburn_Speedster"
+    },
+    {
+        "model": "Push 'n Puller",
+        "manufacturer": "Matchbox",
+        "year": 2023,
+        "country_of_origin": "USA",
+        "category": "Muscle Car",
+        "replica_model": "Matchbox",
+        "info": "https://matchbox.fandom.com/wiki/Push%27n_Puller"
+    },
+    {
+        "model": "Morris Minor Saloon",
+        "manufacturer": "Morris",
+        "year": 1956,
+        "country_of_origin": "UK",
+        "category": "Economy",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Morris_Minor"
+    },
+    {
+        "model": "Ford Ranchero",
+        "manufacturer": "Ford",
+        "year": 1970,
+        "country_of_origin": "USA",
+        "category": "Coupe",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Ford_Ranchero"
+    },
+    {
+        "model": "Tesla Model Y",
+        "manufacturer": "Tesla",
+        "year": 2020,
+        "country_of_origin": "USA",
+        "category": "Crossover",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Tesla_Model_Y"
+    },
+    {
+        "model": "Willys Jeepster (2)",
+        "manufacturer": "Willys\u2013Overland Motors",
+        "year": 1948,
+        "country_of_origin": "USA",
+        "category": "Crossover",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Willys-Overland_Jeepster"
+    },
+    {
+        "model": "Karma GS-6",
+        "manufacturer": "Karma Automotive",
+        "year": 2021,
+        "country_of_origin": "USA",
+        "category": "Sedan",
+        "replica_model": "Matchbox",
+        "info": "https://carbuzz.com/cars/karma/gs-6/"
+    },
+    {
+        "model": "Ford Bronco",
+        "manufacturer": "Ford",
+        "year": 1970,
+        "country_of_origin": "USA",
+        "category": "SUV",
+        "replica_model": "Matchbox",
+        "info": "https://www.bienerford.com/the-ford-bronco-legacy-how-the-1970-model-shaped-future-generations/"
+    },
+    {
+        "model": "VW Karmann Ghia",
+        "manufacturer": "Volkswagen",
+        "year": 1962,
+        "country_of_origin": "Germany",
+        "category": "Sport",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia"
+    },
+    {
+        "model": "Ford Mustang Boss 302",
+        "manufacturer": "Ford",
+        "year": 1969,
+        "country_of_origin": "USA",
+        "category": "Muscle Car",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Boss_302_Mustang"
+    },
+    {
+        "model": "Hummer EV",
+        "manufacturer": "GMC",
+        "year": 2022,
+        "country_of_origin": "USA",
+        "category": "SUV",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/GMC_Hummer_EV"
+    },
+    {
+        "model": "SpaceX Falcon Heavy",
+        "manufacturer": "SpaceX",
+        "year": 2018,
+        "country_of_origin": "USA",
+        "category": "Spaceship",
+        "replica_model": "Matchbox",
+        "info": "https://www.spacex.com/vehicles/falcon-heavy"
+    },
+    {
+        "model": "VW Audi TT RS",
+        "manufacturer": "Volkswagen",
+        "year": 2019,
+        "country_of_origin": "Germany",
+        "category": "Sport",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Audi_TT"
+    },
+    {
+        "model": "Ford Coupe Mobel B",
+        "manufacturer": "Ford",
+        "year": 1932,
+        "country_of_origin": "USA",
+        "category": "Coupe",
+        "replica_model": "Matchbox",
+        "info": "https://el.wikipedia.org/wiki/Ford_1932"
+    },
+    {
+        "model": "Ford Coupe",
+        "manufacturer": "Ford",
+        "year": 1933,
+        "country_of_origin": "USA",
+        "category": "Coupe",
+        "replica_model": "Matchbox",
+        "info": "https://el.wikipedia.org/wiki/Ford_1933"
+    },
+    {
+        "model": "Ford Coupe",
+        "manufacturer": "Ford",
+        "year": 1936,
+        "country_of_origin": "USA",
+        "category": "Coupe",
+        "replica_model": "Matchbox",
+        "info": "https://www.classicautomall.com/vehicles/1844/1936-ford-coupe"
+    },
+    {
+        "model": "Plymouth Sedan",
+        "manufacturer": "Chrysler",
+        "year": 1933,
+        "country_of_origin": "USA",
+        "category": "Sedan",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Plymouth_(automobile)"
+    },
+    {
+        "model": "Ford 1935",
+        "manufacturer": "Ford",
+        "year": 1935,
+        "country_of_origin": "USA",
+        "category": "Pickup",
+        "replica_model": "Matchbox",
+        "info": "https://www.curbsideclassic.com/curbside-classics-american/cc-capsule-1935-ford-model-50-half-ton-pickup-going-stag/"
+    },
+    {
+        "model": "Jeep Gladiator",
+        "manufacturer": "Jeep",
+        "year": 2020,
+        "country_of_origin": "USA",
+        "category": "Truck",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Jeep_Gladiator_(JT)"
+    },
+    {
+        "model": "Morgan Plus Four",
+        "manufacturer": "Morgan",
+        "year": 2020,
+        "country_of_origin": "UK",
+        "category": "Roadster",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Morgan_Plus_Four"
+    },
+    {
+        "model": "Cadillac CTS Wagon",
+        "manufacturer": "Cadillac",
+        "year": 2010,
+        "country_of_origin": "USA",
+        "category": "Wagon",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Cadillac_CTS"
+    },
+    {
+        "model": "Ford Fairlane",
+        "manufacturer": "Ford",
+        "year": 1964,
+        "country_of_origin": "USA",
+        "category": "Wagon",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Ford_Fairlane_(Americas)"
+    },
+    {
+        "model": "Oldsmobile Vista Cruiser",
+        "manufacturer": "Oldsmobile",
+        "year": 1971,
+        "country_of_origin": "USA",
+        "category": "Wagon",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Oldsmobile_Vista_Cruiser"
+    },
+    {
+        "model": "Audi RS 6 Avant",
+        "manufacturer": "Audi",
+        "year": 2004,
+        "country_of_origin": "Germany",
+        "category": "Wagon",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Audi_RS_6"
+    },
+    {
+        "model": "Chevy Wagon",
+        "manufacturer": "Chevrolet",
+        "year": 1959,
+        "country_of_origin": "USA",
+        "category": "Wagon",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Chevrolet_Brookwood"
+    },
+    {
+        "model": "Jeep Renegate",
+        "manufacturer": "Jeep",
+        "year": 2019,
+        "country_of_origin": "USA",
+        "category": "SUV",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Jeep_Renegade"
+    },
+    {
+        "model": "Nissan Hardboby",
+        "manufacturer": "Nissan",
+        "year": 1995,
+        "country_of_origin": "Japan",
+        "category": "Pickup",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Datsun_truck#D21"
+    },
+    {
+        "model": "Nissan NV Van",
+        "manufacturer": "Nissan",
+        "year": 2014,
+        "country_of_origin": "Japan",
+        "category": "Van",
+        "replica_model": "Matchbox",
+        "info": "https://en.wikipedia.org/wiki/Nissan_NV_(North_America)"
+    },
+    {
+        "model": "Seagrave Fire Truck",
+        "manufacturer": "Seagrave",
+        "year": "Unknown",
+        "country_of_origin": "USA",
+        "category": "Fire Truck",
+        "replica_model": "Matchbox",
+        "info": "https://seagrave.com/Our-Trucks/Aerials/Meanstick"
+    }
+]

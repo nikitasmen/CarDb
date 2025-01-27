@@ -1,4 +1,4 @@
-from car_tracker import CarTracker
+from app import CarTracker
 from tabulate import tabulate
 
 class Cli: 

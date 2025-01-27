@@ -2,8 +2,7 @@ from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QFormLayout, QLineEdit, QPushButton, 
     QMessageBox, QTableWidget, QTableWidgetItem, QHeaderView, QInputDialog, QFileDialog
 )
-import sys
-from car_tracker import CarTracker
+from app import CarTracker
 import webbrowser
 
 class CarTrackerApp(QWidget):
