@@ -58,24 +58,6 @@ if [ -d "$PROJECT_DIR" ]; then
     sudo rm -rf "$PROJECT_DIR"
 fi
 
-# Check if git is installed
-if ! command -v git &> /dev/null; then
-    echo "Git is not installed. Installing Git..."
-    sudo apt-get update
-    sudo apt-get install -y git    
-else
-    echo "Git is already installed."
-fi
-
-#check git credentials 
-if ! git config --get user.email; then
-    echo "Please configure your git credentials before proceeding."
-    read -p "Enter your Git username: " username
-    git config --global user.name "$username"
-    read -p "Enter your Git email: " email
-    git config --global user.email "$email"
-fi
-
 # Create a Python virtual environment
 python3 -m venv venv
 
@@ -96,7 +78,7 @@ if [ ! -f "main.py" ]; then
 fi
 
 # Build the project using PyInstaller
-pyinstaller --onefile --windowed main.py
+pyinstaller --onefile --windowed --add-data "data/car.json:./data" main.py
 
 # Create the shortcut in the specified directory
 ln -sfn "$(pwd)/dist/main" "$SHORTCUT_DIR/carDb"

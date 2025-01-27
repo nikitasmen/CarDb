@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication
-from gui import CarTrackerApp
-from cli import Cli
+from interfaces import CarTrackerApp
+from interfaces import Cli
 import sys
 
 if __name__ == "__main__":
