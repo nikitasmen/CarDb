@@ -6,8 +6,11 @@ Simple CRUD application for miniature car collection.
 
 1. Python 3
     - PyQt5
+    - tabulate
+    - pandas
+    - openpyxl
     - PyInstaller (Optional)
-2. Git account
+
 
 ## Installation
 
