@@ -55,9 +55,13 @@ Simple CRUD application for miniature car collection.
     #### 2b: Automatic Setup:
 
     1. Install Python 3
-    2. Install Git from [here](https://git-scm.com/downloads)
+
     3. Run the setup script:
 
         ```sh
-        ./setup.sh
+        ./linux_setup.sh
         ```
+        ```sh
+        ./windows_setup.bat
+        ```
+        
