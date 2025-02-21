@@ -3,7 +3,6 @@ setlocal
 
 :: Project details
 set PROJECT_DIR=CarDb
-set REPO_URL=https://github.com/nikitasmen/CarDb.git
 
 :: Function to get Desktop path based on the OS
 set "SHORTCUT_DIR=%USERPROFILE%\Desktop"

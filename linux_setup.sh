@@ -2,7 +2,6 @@
 
 # Project details
 PROJECT_DIR="./CarDb"
-REPO_URL="https://github.com/nikitasmen/CarDb.git"
 
 # Detect platform and get desktop path
 get_desktop_path() {
