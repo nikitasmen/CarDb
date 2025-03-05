@@ -26,7 +26,7 @@ if exist "%PROJECT_DIR%" (
 )
 
 :: Check if Python is installed
-py --version >nul 2>&1
+python --version >nul 2>&1
 if errorlevel 1 (
     echo Python3 is not installed. Installing Python3...
     :: Install Python using Chocolatey (if installed)
@@ -34,7 +34,7 @@ if errorlevel 1 (
 )
 
 :: Check for pip and install dependencies
-py -m pip --version >nul 2>&1
+python -m pip --version >nul 2>&1
 if errorlevel 1 (
     echo pip is not installed. Installing pip...
     python -m ensurepip --upgrade
@@ -43,7 +43,7 @@ if errorlevel 1 (
 :: Ensure the virtual environment is created
 if not exist "venv" (
     echo Creating Python virtual environment...
-    py -m venv venv
+    python -m venv venv
 )
 
 :: Activate the virtual environment
@@ -51,8 +51,8 @@ call venv\Scripts\activate
 
 :: Install required packages
 echo Installing required packages...
-py -m pip install pyinstaller
-py -m pip install -r requirements.txt --no-warn-script-location
+python -m pip install pyinstaller
+python -m pip install -r requirements.txt --no-warn-script-location
 
 :: Check if main.py exists
 if not exist "main.py" (
