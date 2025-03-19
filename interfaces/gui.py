@@ -86,8 +86,14 @@ class CarTrackerApp(QWidget):
         if cars:
             for row_idx, car in enumerate(cars):
                 self.table.insertRow(row_idx)
-                for col_idx, key in enumerate(car.values()):
-                    self.table.setItem(row_idx, col_idx, QTableWidgetItem(str(key)))
+                
+                for col_idx, key in enumerate(car.keys()):
+                    if key == "model":
+                        self.table.setItem(row_idx, col_idx, QTableWidgetItem(str(car[key])))
+                    elif key == "more":
+                        self.table.setItem(row_idx, col_idx, QTableWidgetItem(car[key]))
+                    else:
+                        self.table.setItem(row_idx, col_idx, QTableWidgetItem(str(car[key]).title()))
         else:
             QMessageBox.information(self, "No Data", "No cars to display.")
 
