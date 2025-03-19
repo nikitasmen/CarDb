@@ -93,22 +93,26 @@ class CarTrackerApp(QWidget):
 
     def search_car(self):
         model_name, ok = QInputDialog.getText(self, "Search Car", "Enter the model name:")
+        
         if ok and model_name:
             cars = self.car_tracker.search(model_name)
+            
             if cars:
-                car_details = "\n\n".join(
-                    f"Model Name: {car['model']}\n"
-                    f"Manufacturer: {car['manufacturer']}\n"
-                    f"Year: {car['year']}\n"
-                    f"Origin Country: {car['country_of_origin']}\n"
-                    f"Category: {car['category']}\n"
-                    f"Model Manufacturing Details: {car['replica_model']}\n"
-                    f"More Info: {car['info']}"
-                    for car in cars
-                )
-                QMessageBox.information(self, "Car Found", car_details)
+                self.table.setRowCount(0)  
+                
+                row_idx = 0
+                for car in cars:
+                    self.table.insertRow(row_idx)
+                    
+                    for col_idx, key in enumerate(car.values()):
+                        self.table.setItem(row_idx, col_idx, QTableWidgetItem(str(key)))
+                            
+                    row_idx += 1
+                    
+                QMessageBox.information(self, "Car Found", "Search results displayed.")
             else:
                 QMessageBox.warning(self, "Not Found", "Car not found.")
+
 
     def delete_car(self):
         model_name, ok = QInputDialog.getText(self, "Delete Car", "Enter the model name:")
