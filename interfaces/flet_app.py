@@ -38,6 +38,37 @@ class FletApp:
         page.on_view_pop = self.view_pop
         page.go("/")
 
+    def update_main_view(self):
+        main_view = self.create_main_view()
+        self.page.views.clear()
+        self.page.views.append(main_view)
+        self.page.update()
+
+    def show_delete_dialog(self, model_name):
+        def close_dialog(e):
+            confirm_dialog.open = False
+            self.page.update()
+
+        def delete_confirmed(e):
+            self.car_tracker.deleteData(model_name)
+            close_dialog(e)
+            self.update_main_view()
+
+        confirm_dialog = ft.AlertDialog(
+            modal=True,
+            title=ft.Text("Confirm Delete"),
+            content=ft.Text(f"Are you sure you want to delete '{model_name}'?"),
+            actions=[
+                ft.TextButton("Delete", on_click=delete_confirmed, style=ft.ButtonStyle(color=ft.Colors.RED)),
+                ft.TextButton("Cancel", on_click=close_dialog),
+            ],
+            actions_alignment=ft.MainAxisAlignment.END,
+        )
+
+        self.page.overlay.append(confirm_dialog)
+        confirm_dialog.open = True
+        self.page.update()
+
     def create_main_view(self, search_term=None):
         cars = self.car_tracker.displayData() if not search_term else self.car_tracker.search(search_term)
         
