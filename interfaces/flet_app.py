@@ -104,6 +104,48 @@ class FletApp:
             navigation_bar=self.page.navigation_bar
         )
 
+    def create_edit_car_view(self, model_name):
+        car_to_edit = next((car for car in self.car_tracker.displayData() if car.get('model') == model_name), None)
+
+        if not car_to_edit:
+            return ft.View(f"/edit_car/{model_name}", [ft.AppBar(title=ft.Text("Edit Car"), bgcolor="#333333"), ft.Text("Car not found.")])
+
+        fields = {
+            "modelName": ft.TextField(label="Model Name", value=car_to_edit.get("model", ""), disabled=True),
+            "manufacturer": ft.TextField(label="Manufacturer", value=car_to_edit.get("manufacturer", "")),
+            "year": ft.TextField(label="Year", value=str(car_to_edit.get("year", ""))),
+            "originCountry": ft.TextField(label="Origin Country", value=car_to_edit.get("country_of_origin", "")),
+            "category": ft.TextField(label="Category", value=car_to_edit.get("category", "")),
+            "modelManufact": ft.TextField(label="Replica Model", value=car_to_edit.get("replica_model", "")),
+            "more": ft.TextField(label="More Info (URL)", value=car_to_edit.get("info", ""))
+        }
+
+        def update_car_click(e):
+            # Create a new dictionary for the updated data
+            updated_data = {key: field.value if field.value else "" for key, field in fields.items()}
+            # The modelName is disabled, so its value won't be in the dictionary, add it back
+            updated_data['modelName'] = model_name
+
+            # Delete the old record and add the new one
+            self.car_tracker.deleteData(model_name)
+            self.car_tracker.addData(**updated_data)
+            self.page.go("/")
+
+        return ft.View(
+            f"/edit_car/{model_name}",
+            [
+                ft.AppBar(title=ft.Text("Edit Car"), bgcolor="#333333"),
+                *fields.values(),
+                ft.Row(
+                    [
+                        ft.ElevatedButton("Update Car", on_click=update_car_click),
+                        ft.ElevatedButton("Cancel", on_click=lambda _: self.page.go("/")),
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                )
+            ]
+        )
+
     def create_add_car_view(self):
         fields = {
             "modelName": ft.TextField(label="Model Name"),
@@ -146,7 +188,13 @@ class FletApp:
             [
                 ft.AppBar(title=ft.Text("Add Car"), bgcolor="#333333"),
                 *fields.values(),
-                ft.ElevatedButton("Add Car", on_click=add_car_click)
+                ft.Row(
+                    [
+                        ft.ElevatedButton("Add Car", on_click=add_car_click),
+                        ft.ElevatedButton("Cancel", on_click=lambda _: self.page.go("/")),
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                )
             ],
             scroll=ft.ScrollMode.AUTO
         )
