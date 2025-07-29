@@ -51,8 +51,10 @@ class FletApp:
                             content=ft.Column([
                                 ft.ListTile(
                                     leading=ft.Icon(ft.Icons.DIRECTIONS_CAR),
-                                    title=ft.Text(f"{car.get('model', '')}"),
+                                    title=ft.Text(f"{car.get('model', '')}", weight=ft.FontWeight.BOLD),
                                     subtitle=ft.Text(f"{car.get('manufacturer', '')} - {car.get('year', '')}"),
+                                    on_click=lambda e, url=car.get('info', ''): self.page.launch_url(url) if url else None,
+                                    trailing=ft.Icon(ft.Icons.OPEN_IN_NEW) if car.get('info') else None
                                 ),
                                 ft.Row([ft.Text(f"Category: {car.get('category', '')}")], alignment=ft.MainAxisAlignment.START),
                                 ft.Row([ft.Text(f"Origin: {car.get('country_of_origin', '')}")], alignment=ft.MainAxisAlignment.START),
