@@ -227,8 +227,11 @@ class FletApp:
 
         if route_path == "/":
             self.page.views.append(self.create_main_view())
-        elif route_path == "/add_car":
+        if self.page.route == "/add_car":
             self.page.views.append(self.create_add_car_view())
+        elif self.page.route.startswith("/edit_car/"):
+            model_name = self.page.route.split("/")[-1]
+            self.page.views.append(self.create_edit_car_view(model_name))
         elif route_path == "/search":
             self.page.views.append(self.create_search_view())
         elif route_path.startswith("/search/"):
