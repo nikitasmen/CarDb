@@ -73,6 +73,10 @@ class FletApp:
         cars = self.car_tracker.displayData() if not search_term else self.car_tracker.search(search_term)
         
         car_list = ft.ListView(expand=1, spacing=10, padding=20)
+        cars_data = self.car_tracker.displayData()
+        total_cars = len(cars_data)
+        car_count_text = ft.Text(f"Total cars collected: {total_cars}", size=16, weight=ft.FontWeight.BOLD, text_align=ft.TextAlign.CENTER)
+
         if cars:
             for car in cars:
                 car_list.controls.append(
@@ -87,8 +91,14 @@ class FletApp:
                                     on_click=lambda e, url=car.get('info', ''): self.page.launch_url(url) if url else None,
                                     trailing=ft.Icon(ft.Icons.OPEN_IN_NEW) if car.get('info') else None
                                 ),
-                                ft.Row([ft.Text(f"Category: {car.get('category', '')}")], alignment=ft.MainAxisAlignment.START),
-                                ft.Row([ft.Text(f"Origin: {car.get('country_of_origin', '')}")], alignment=ft.MainAxisAlignment.START),
+                                ft.Row([
+                                    ft.Text(f"Category: {car.get('category', '')}"),
+                                    ft.Text(f"Origin: {car.get('country_of_origin', '')}")
+                                ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+                                ft.Row([
+                                    ft.IconButton(icon=ft.Icons.EDIT, on_click=lambda e, car=car: self.page.go(f"/edit_car/{car.get('model')}")),
+                                    ft.IconButton(icon=ft.Icons.DELETE, on_click=lambda e, car=car: self.show_delete_dialog(car.get('model')))
+                                ], alignment=ft.MainAxisAlignment.END),
                             ])
                         )
                     )
@@ -98,7 +108,10 @@ class FletApp:
 
         return ft.View(
             "/",
-            [car_list],
+            [
+                ft.Container(content=car_count_text, padding=ft.padding.only(top=10)),
+                car_list
+            ],
             floating_action_button=ft.FloatingActionButton(icon=ft.Icons.ADD, on_click=lambda _: self.page.go("/add_car")),
             appbar=self.page.appbar,
             navigation_bar=self.page.navigation_bar
