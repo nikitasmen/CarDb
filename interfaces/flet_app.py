@@ -251,4 +251,4 @@ class FletApp:
 
 def run_flet_app():
     app = FletApp()
-    ft.app(target=app.main)
+    ft.app(target=app.main , view=ft.WEB_BROWSER )
