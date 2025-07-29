@@ -3,3 +3,6 @@ venv/
 
 #ignore __pycache__
 __pycache__/
+
+#ingore build folder
+build/

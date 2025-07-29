@@ -5,12 +5,12 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), 'app'))
 
 from PyQt5.QtWidgets import QApplication
-from interfaces import CarTrackerApp
-from interfaces import Cli
+from interfaces import CarTrackerApp, Cli, run_flet_app
 
 if __name__ == "__main__":
     print("Starting Car Tracker App")
-    load = input("Load ui or cli? (Gui/Cli): (Enter default is Gui) ")
+    load = input("Load interface (Gui/Cli/Flet): (Enter default is Gui) ")
+    
     if load.lower() == "cli":
         print("Starting Car Tracker App in CLI mode")
         print("Please enter the commands as per the instructions")
@@ -18,6 +18,9 @@ if __name__ == "__main__":
         print("Type 'exit' to exit the program")
         cli = Cli()
         cli.run()
+    elif load.lower() == "flet":
+        print("Starting Car Tracker App in Flet mode")
+        run_flet_app()
     else:
         print("Starting Car Tracker App in GUI mode")
         app = QApplication(sys.argv)
