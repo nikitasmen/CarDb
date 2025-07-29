@@ -3,3 +3,4 @@ tabulate
 pyinstaller
 pandas
 openpyxl
+flet>=0.28.3
