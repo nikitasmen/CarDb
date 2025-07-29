@@ -9,8 +9,9 @@ A CRUD application for managing your miniature car collection. Track details abo
 - Add, view, update, and delete car entries
 - Search functionality to find specific cars by model name
 - Import data from multiple formats (JSON, CSV, Excel)
-- Dual interface options:
-  - GUI mode with form-based input and table display
+- Multiple interface options:
+  - PyQt5 GUI mode with form-based input and table display
+  - Flet GUI mode for a modern, web-based experience
   - CLI mode for command-line operations
 - URL support for additional car information
 - Cross-platform compatibility (Windows, macOS, Linux)
@@ -20,6 +21,7 @@ A CRUD application for managing your miniature car collection. Track details abo
 - Python 3.6+
 - Dependencies:
   - PyQt5 - GUI framework
+  - flet - Flet GUI framework
   - tabulate - CLI table formatting
   - pandas - Data handling
   - openpyxl - Excel file support
@@ -64,7 +66,7 @@ A CRUD application for managing your miniature car collection. Track details abo
    
    Or install packages individually:
    ```sh
-   pip install pyqt5 tabulate pandas openpyxl pyinstaller
+   pip install pyqt5 flet tabulate pandas openpyxl pyinstaller
    ```
 
 6. (Optional) Build the executable:
@@ -109,10 +111,11 @@ python main.py
 ```
 
 When prompted, select your preferred interface:
-- For GUI mode: Type `Gui` or simply press Enter (default)
+- For PyQt5 GUI mode: Type `Gui` or simply press Enter (default)
+- For Flet GUI mode: Type `Flet`
 - For CLI mode: Type `Cli`
 
-### GUI Interface
+### PyQt5 GUI Interface
 
 The graphical interface provides:
 - Input form for adding new car entries
@@ -120,6 +123,10 @@ The graphical interface provides:
 - Search functionality by model name
 - Import support for external data files
 - URL opening for additional information (double-click More Info cell)
+
+### Flet Interface
+
+The Flet interface provides a modern, web-based GUI with similar functionality to the PyQt5 GUI, including adding, viewing, and searching for car entries.
 
 ### CLI Interface
 
@@ -156,7 +163,8 @@ CarDb/
 │   └── utils.py         # Utility functions
 ├── interfaces/          # User interface implementations
 │   ├── cli.py           # Command-line interface
-│   └── gui.py           # Graphical user interface
+│   ├── gui.py           # PyQt5 graphical user interface
+│   └── flet_app.py      # Flet graphical user interface
 ├── main.py              # Application entry point
 ├── requirements.txt     # Project dependencies
 ├── linux_setup.sh       # Linux/macOS setup script
