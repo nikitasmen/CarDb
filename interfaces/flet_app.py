@@ -83,11 +83,28 @@ class FletApp:
         }
 
         def add_car_click(e):
-            if all(field.value for field in fields.values()):
-                self.car_tracker.addData(**{key: field.value for key, field in fields.items()})
-                self.page.go("/")
+            model_name_field = fields["modelName"]
+            if not model_name_field.value:
+                model_name_field.error_text = "Model Name is required"
+                self.page.update()
+                return
             else:
-                self.page.snack_bar = ft.SnackBar(ft.Text("Please fill all fields"))
+                model_name_field.error_text = None
+                
+            # Prepare data with empty strings for missing optional fields
+            data = {
+                key: field.value if field.value else "" 
+                for key, field in fields.items()
+            }
+            
+            try:
+                self.car_tracker.addData(**data)
+                # Clear the form
+                for field in fields.values():
+                    field.value = ""
+                self.page.go("/")
+            except Exception as ex:
+                self.page.snack_bar = ft.SnackBar(ft.Text(f"Error saving car: {str(ex)}"))
                 self.page.snack_bar.open = True
                 self.page.update()
 
