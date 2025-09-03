@@ -21,7 +21,7 @@ def build_apk():
         "build",
         "apk",
         "--module-name",
-        "flet_app"
+        "mobile_app"
     ]
 
     try:
