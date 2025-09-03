@@ -1,0 +1,22 @@
+name: CarDb Mobile
+version: 1.0.0
+author: CarDb Team
+description: A mobile app to manage your miniature car collection.
+
+assets_dir: assets
+
+modules:
+  - app
+  - interfaces
+
+# Mobile app configuration
+android:
+  package: com.cardb.mobile
+  icon: assets/icon.png
+  
+ios:
+  bundle_id: com.cardb.mobile
+  icon: assets/icon.png
+
+web:
+  title: CarDb Mobile
