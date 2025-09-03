@@ -1,61 +1,74 @@
 import flet as ft
 from app import CarTracker
 import asyncio
+import threading
+from functools import lru_cache
 
 class FletApp:
     def __init__(self):
         self.car_tracker = CarTracker()
         self._cars_cache = None
         self._cache_dirty = True
+        self._loading = False
+        self._max_cards_initial = 10  # Load only 10 cars initially
+        self._cards_loaded = 0
+        self._current_cars = []  # Store current cars for pagination
 
     def main(self, page: ft.Page):
         self.page = page
-        page.title = "CarDb Mobile"
+        page.title = "CarDb"
         page.theme_mode = ft.ThemeMode.SYSTEM
         page.padding = 0
         page.spacing = 0
         
-        # Mobile-optimized app bar
+        # Simplified app bar for faster rendering
         page.appbar = ft.AppBar(
-            title=ft.Text("CarDb", size=20, weight=ft.FontWeight.BOLD),
+            title=ft.Text("CarDb", size=18),
             center_title=True,
             bgcolor=ft.Colors.BLUE_700,
-            elevation=4
+            elevation=1  # Reduced elevation for better performance
         )
 
-        # Mobile-optimized navigation
+        # Simplified navigation bar
         page.navigation_bar = ft.NavigationBar(
             destinations=[
-                ft.NavigationBarDestination(
-                    icon=ft.Icons.HOME_OUTLINED,
-                    selected_icon=ft.Icons.HOME,
-                    label="Home"
-                ),
-                ft.NavigationBarDestination(
-                    icon=ft.Icons.SEARCH,
-                    selected_icon=ft.Icons.SEARCH,
-                    label="Search"
-                ),
-                ft.NavigationBarDestination(
-                    icon=ft.Icons.ADD,
-                    selected_icon=ft.Icons.ADD,
-                    label="Add Car"
-                ),
+                ft.NavigationBarDestination(icon=ft.Icons.HOME, label="Home"),
+                ft.NavigationBarDestination(icon=ft.Icons.SEARCH, label="Search"),
+                ft.NavigationBarDestination(icon=ft.Icons.ADD, label="Add"),
             ],
             on_change=self.nav_change,
             selected_index=0,
-            height=80
+            height=60  # Reduced height
         )
 
         page.on_route_change = self.route_change
         page.on_view_pop = self.view_pop
         page.go("/")
 
+    @lru_cache(maxsize=1)
+    def _get_cars_data_cached(self, cache_key):
+        """Cached data retrieval to avoid repeated file reads"""
+        try:
+            return self.car_tracker.displayData()
+        except Exception as e:
+            print(f"Error loading cars data: {e}")
+            return []
+
     def _get_cars_data(self, force_refresh=False):
-        """Get cars data with caching for better performance"""
+        """Get cars data with optimized caching for better performance"""
+        if self._loading:
+            return self._cars_cache or []
+            
         if self._cache_dirty or force_refresh or self._cars_cache is None:
+            # Use a simple timestamp as cache key
+            import time
+            cache_key = int(time.time()) if force_refresh else 0
+            
+            if not force_refresh and self._cars_cache is not None:
+                return self._cars_cache
+                
             try:
-                self._cars_cache = self.car_tracker.displayData()
+                self._cars_cache = self._get_cars_data_cached(cache_key)
                 self._cache_dirty = False
             except Exception as e:
                 print(f"Error loading cars data: {e}")
@@ -65,11 +78,31 @@ class FletApp:
     def _invalidate_cache(self):
         """Mark cache as dirty to force refresh on next access"""
         self._cache_dirty = True
+        # Clear LRU cache
+        self._get_cars_data_cached.cache_clear()
+
+    def _load_data_async(self):
+        """Load data in background thread to avoid blocking UI"""
+        if self._loading:
+            return
+            
+        def load_data():
+            self._loading = True
+            try:
+                self._invalidate_cache()
+                self._get_cars_data(force_refresh=True)
+            finally:
+                self._loading = False
+        
+        threading.Thread(target=load_data, daemon=True).start()
 
     def update_main_view(self):
-        """Update main view with error handling"""
+        """Update main view with error handling and performance optimization"""
         try:
-            self._invalidate_cache()
+            # Load data asynchronously if needed
+            if self._cache_dirty:
+                self._load_data_async()
+            
             main_view = self.create_main_view()
             self.page.views.clear()
             self.page.views.append(main_view)
@@ -134,144 +167,185 @@ class FletApp:
             cars_data = self._get_cars_data()
             
             if search_term:
-                cars = self.car_tracker.search(search_term)
-                cars = cars if cars else []
+                cars = [car for car in cars_data if search_term.lower() in car.get('model', '').lower()]
             else:
                 cars = cars_data
             
-            # Mobile-optimized scrollable list
-            car_list = ft.ListView(expand=1, spacing=8, padding=ft.padding.all(16), auto_scroll=False)
-            total_cars = len(cars_data)
+            # Store cars for load more functionality
+            self._current_cars = cars
             
-            # Header with car count
+            # Create lightweight car cards with lazy loading
+            car_cards = self._create_car_cards_optimized(cars)
+            
+            # Simplified header
             header = ft.Container(
-                content=ft.Column([
-                    ft.Text(f"Total Cars: {total_cars}", 
-                           size=18, 
-                           weight=ft.FontWeight.BOLD, 
-                           color=ft.Colors.BLUE_700),
-                    ft.Divider(height=1)
-                ]),
-                padding=ft.padding.symmetric(horizontal=16, vertical=8)
+                content=ft.Text(f"Cars: {len(cars_data)}", 
+                               size=16, 
+                               weight=ft.FontWeight.BOLD),
+                padding=ft.padding.all(8),
+                bgcolor=ft.Colors.BLUE_50,
+                border_radius=8,
+                margin=ft.margin.all(8)
             )
 
-            if cars:
-                for car in cars:
-                    # Mobile-optimized car card
-                    car_card = ft.Card(
-                        content=ft.Container(
-                            padding=ft.padding.all(12),
-                            content=ft.Column([
-                                # Main car info
-                                ft.Row([
-                                    ft.Icon(ft.Icons.DIRECTIONS_CAR, 
-                                           color=ft.Colors.BLUE_700, 
-                                           size=24),
-                                    ft.Container(
-                                        content=ft.Column([
-                                            ft.Text(f"{car.get('model', '')}", 
-                                                   weight=ft.FontWeight.BOLD, 
-                                                   size=16),
-                                            ft.Text(f"{car.get('manufacturer', '')} • {car.get('year', '')}", 
-                                                   size=14, 
-                                                   color=ft.Colors.GREY_700)
-                                        ], spacing=2),
-                                        expand=True
-                                    )
-                                ], spacing=8),
-                                
-                                # Additional details
-                                ft.Container(
-                                    content=ft.Column([
-                                        ft.Row([
-                                            ft.Icon(ft.Icons.CATEGORY, size=16, color=ft.Colors.GREY_600),
-                                            ft.Text(f"{car.get('category', 'N/A')}", size=12)
-                                        ], spacing=4),
-                                        ft.Row([
-                                            ft.Icon(ft.Icons.PUBLIC, size=16, color=ft.Colors.GREY_600),
-                                            ft.Text(f"{car.get('country_of_origin', 'N/A')}", size=12)
-                                        ], spacing=4)
-                                    ], spacing=4),
-                                    padding=ft.padding.only(top=8)
-                                ),
-                                
-                                # Action buttons
-                                ft.Row([
-                                    ft.IconButton(
-                                        icon=ft.Icons.EDIT,
-                                        icon_color=ft.Colors.BLUE_600,
-                                        tooltip="Edit",
-                                        on_click=lambda e, car=car: self.page.go(f"/edit_car/{car.get('model')}")
-                                    ),
-                                    ft.IconButton(
-                                        icon=ft.Icons.DELETE,
-                                        icon_color=ft.Colors.RED_600,
-                                        tooltip="Delete",
-                                        on_click=lambda e, car=car: self.show_delete_dialog(car.get('model'))
-                                    ),
-                                    ft.IconButton(
-                                        icon=ft.Icons.OPEN_IN_NEW,
-                                        icon_color=ft.Colors.GREEN_600,
-                                        tooltip="More Info",
-                                        on_click=lambda e, url=car.get('info', ''): self.page.launch_url(url) if url else None,
-                                        disabled=not car.get('info')
-                                    )
-                                ], alignment=ft.MainAxisAlignment.END)
-                            ], spacing=8)
-                        ),
-                        elevation=2,
-                        margin=ft.margin.only(bottom=4)
-                    )
-                    car_list.controls.append(car_card)
-            else:
-                car_list.controls.append(
-                    ft.Container(
-                        content=ft.Column([
-                            ft.Icon(ft.Icons.DIRECTIONS_CAR_OUTLINED, size=64, color=ft.Colors.GREY_400),
-                            ft.Text("No cars found", size=18, weight=ft.FontWeight.BOLD),
-                            ft.Text("Tap the + button to add your first car!", 
-                                   color=ft.Colors.GREY_600)
-                        ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=8),
-                        padding=ft.padding.all(32),
-                        alignment=ft.alignment.center
-                    )
-                )
+            # Use ListView with auto_scroll=False to maintain scroll position
+            car_list = ft.ListView(
+                controls=[header] + car_cards,
+                spacing=4,
+                padding=ft.padding.all(4),
+                expand=True,
+                auto_scroll=False  # This prevents auto-scrolling to top
+            )
 
             return ft.View(
                 "/",
-                [
-                    header,
-                    car_list
-                ],
+                [car_list],
                 floating_action_button=ft.FloatingActionButton(
                     icon=ft.Icons.ADD, 
                     on_click=lambda _: self.page.go("/add_car"),
                     bgcolor=ft.Colors.BLUE_700,
-                    tooltip="Add New Car"
+                    mini=True  # Smaller FAB for mobile
                 ),
                 appbar=self.page.appbar,
-                navigation_bar=self.page.navigation_bar
+                navigation_bar=self.page.navigation_bar,
+                padding=0  # Remove padding for better performance
             )
         except Exception as e:
             print(f"Error creating main view: {e}")
-            # Return error view
-            return ft.View(
-                "/",
-                [
-                    ft.Container(
-                        content=ft.Column([
-                            ft.Icon(ft.Icons.ERROR_OUTLINE, size=64, color=ft.Colors.RED_400),
-                            ft.Text("Error loading cars", size=18, weight=ft.FontWeight.BOLD),
-                            ft.Text(f"Please try again. Error: {str(e)}", color=ft.Colors.GREY_600),
-                            ft.ElevatedButton("Retry", on_click=lambda _: self.update_main_view())
-                        ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=8),
-                        padding=ft.padding.all(32),
-                        alignment=ft.alignment.center
-                    )
-                ],
-                appbar=self.page.appbar,
-                navigation_bar=self.page.navigation_bar
+            return self._create_error_view(f"Error loading cars: {e}")
+
+    def _create_car_cards_optimized(self, cars):
+        """Create optimized car cards with simplified UI"""
+        if not cars:
+            return [ft.Container(
+                content=ft.Column([
+                    ft.Icon(ft.Icons.DIRECTIONS_CAR_OUTLINED, size=48, color=ft.Colors.GREY_400),
+                    ft.Text("No cars found", size=16, weight=ft.FontWeight.BOLD),
+                    ft.Text("Tap + to add your first car!", color=ft.Colors.GREY_600)
+                ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=8),
+                padding=ft.padding.all(20),
+                alignment=ft.alignment.center
+            )]
+
+        cards = []
+        # Use the current limit from instance variable
+        display_limit = min(len(cars), self._max_cards_initial)
+        
+        for i, car in enumerate(cars[:display_limit]):
+            # Simplified card design for better performance
+            card = ft.Card(
+                content=ft.ListTile(
+                    leading=ft.CircleAvatar(
+                        content=ft.Text(car.get('model', 'C')[0].upper(), 
+                                      color=ft.Colors.WHITE, size=14),
+                        bgcolor=ft.Colors.BLUE_700,
+                        radius=18
+                    ),
+                    title=ft.Text(car.get('model', 'Unknown'), 
+                                size=14, weight=ft.FontWeight.BOLD),
+                    subtitle=ft.Text(f"{car.get('manufacturer', '')} • {car.get('year', '')}", 
+                                   size=12),
+                    trailing=ft.PopupMenuButton(
+                        items=[
+                            ft.PopupMenuItem(
+                                text="Edit",
+                                on_click=lambda e, model=car.get('model'): self.page.go(f"/edit_car/{model}")
+                            ),
+                            ft.PopupMenuItem(
+                                text="Delete",
+                                on_click=lambda e, model=car.get('model'): self.show_delete_dialog(model)
+                            ),
+                        ],
+                        icon_size=16
+                    ),
+                    on_click=lambda e, url=car.get('info', ''): self.page.launch_url(url) if url else None
+                ),
+                elevation=1,  # Reduced elevation
+                margin=ft.margin.symmetric(horizontal=8, vertical=2)
             )
+            cards.append(card)
+        
+        # Add "Load More" button if there are more cars
+        if len(cars) > display_limit:
+            cards.append(
+                ft.Container(
+                    content=ft.ElevatedButton(
+                        f"Load {len(cars) - display_limit} more cars",
+                        on_click=lambda e: self._load_more_cars_improved(e),
+                        style=ft.ButtonStyle(
+                            color=ft.Colors.BLUE_700,
+                            padding=ft.padding.symmetric(horizontal=16, vertical=8)
+                        ),
+                        key="load_more_btn"  # Add key for identification
+                    ),
+                    alignment=ft.alignment.center,
+                    padding=8,
+                    key="load_more_container"  # Add key for scroll position
+                )
+            )
+        
+        return cards
+
+    def _load_more_cars_improved(self, e):
+        """Load more cars without losing scroll position"""
+        try:
+            # Get current cars and increase display limit
+            current_cars = getattr(self, '_current_cars', self._get_cars_data())
+            old_limit = self._max_cards_initial
+            new_limit = min(len(current_cars), old_limit + 15)
+            self._max_cards_initial = new_limit
+            
+            # Update the ListView in place to maintain scroll position
+            if hasattr(self.page, 'views') and self.page.views:
+                current_view = self.page.views[-1]
+                if current_view.route == "/":
+                    # Find the ListView
+                    for control in current_view.controls:
+                        if isinstance(control, ft.ListView):
+                            # Get updated car cards
+                            header = control.controls[0]  # Keep the header
+                            updated_cards = self._create_car_cards_optimized(current_cars)
+                            
+                            # Update ListView controls while preserving scroll
+                            control.controls = [header] + updated_cards
+                            
+                            # Update the page
+                            self.page.update()
+                            
+                            # Show feedback to user
+                            self.show_success(f"Loaded {new_limit - old_limit} more cars!")
+                            return
+            
+            # Fallback to full update if in-place update fails
+            self.update_main_view()
+            
+        except Exception as ex:
+            self.show_error(f"Error loading more cars: {ex}")
+
+    def _load_more_cars(self, all_cars, current_limit):
+        """Legacy method - kept for compatibility"""
+        self._load_more_cars_improved(None)
+
+    def _create_error_view(self, error_message):
+        """Create a simple error view"""
+        return ft.View(
+            "/",
+            [
+                ft.Container(
+                    content=ft.Column([
+                        ft.Icon(ft.Icons.ERROR_OUTLINE, size=64, color=ft.Colors.RED_400),
+                        ft.Text("Error", size=18, weight=ft.FontWeight.BOLD),
+                        ft.Text(error_message, text_align=ft.TextAlign.CENTER),
+                        ft.ElevatedButton("Retry", on_click=lambda _: self.update_main_view())
+                    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=8),
+                    padding=ft.padding.all(32),
+                    alignment=ft.alignment.center,
+                    expand=True
+                )
+            ],
+            appbar=self.page.appbar,
+            navigation_bar=self.page.navigation_bar
+        )
 
     def create_edit_car_view(self, model_name):
         car_to_edit = next((car for car in self.car_tracker.displayData() if car.get('model') == model_name), None)
@@ -316,52 +390,15 @@ class FletApp:
         )
 
     def create_add_car_view(self):
-        # Mobile-optimized form fields
+        # Simplified form fields for faster rendering
         fields = {
-            "modelName": ft.TextField(
-                label="Model Name *", 
-                hint_text="e.g., Mustang GT",
-                border_radius=8,
-                filled=True
-            ),
-            "manufacturer": ft.TextField(
-                label="Manufacturer", 
-                hint_text="e.g., Ford",
-                border_radius=8,
-                filled=True
-            ),
-            "year": ft.TextField(
-                label="Year", 
-                hint_text="e.g., 2023",
-                keyboard_type=ft.KeyboardType.NUMBER,
-                border_radius=8,
-                filled=True
-            ),
-            "originCountry": ft.TextField(
-                label="Origin Country", 
-                hint_text="e.g., USA",
-                border_radius=8,
-                filled=True
-            ),
-            "category": ft.TextField(
-                label="Category", 
-                hint_text="e.g., Sports Car",
-                border_radius=8,
-                filled=True
-            ),
-            "modelManufact": ft.TextField(
-                label="Model Manufacturer", 
-                hint_text="e.g., Hot Wheels",
-                border_radius=8,
-                filled=True
-            ),
-            "more": ft.TextField(
-                label="More Info (URL)", 
-                hint_text="https://...",
-                keyboard_type=ft.KeyboardType.URL,
-                border_radius=8,
-                filled=True
-            )
+            "modelName": ft.TextField(label="Model Name *", hint_text="e.g., Mustang GT"),
+            "manufacturer": ft.TextField(label="Manufacturer", hint_text="e.g., Ford"),
+            "year": ft.TextField(label="Year", hint_text="e.g., 2023", keyboard_type=ft.KeyboardType.NUMBER),
+            "originCountry": ft.TextField(label="Origin Country", hint_text="e.g., USA"),
+            "category": ft.TextField(label="Category", hint_text="e.g., Sports Car"),
+            "modelManufact": ft.TextField(label="Model Manufacturer", hint_text="e.g., Hot Wheels"),
+            "more": ft.TextField(label="More Info (URL)", hint_text="https://...", keyboard_type=ft.KeyboardType.URL)
         }
 
         def add_car_click(e):
@@ -395,57 +432,29 @@ class FletApp:
             except Exception as ex:
                 self.show_error(f"Error saving car: {str(ex)}")
 
-        # Mobile-optimized form layout
-        form_content = ft.Column([
-            ft.Container(
-                content=ft.Text("Add New Car", size=20, weight=ft.FontWeight.BOLD),
-                padding=ft.padding.only(bottom=16)
-            ),
-            *[ft.Container(content=field, padding=ft.padding.only(bottom=8)) 
-              for field in fields.values()],
-            ft.Container(
-                content=ft.Row(
-                    [
-                        ft.ElevatedButton(
-                            "Add Car", 
-                            on_click=add_car_click,
-                            style=ft.ButtonStyle(
-                                bgcolor=ft.Colors.BLUE_700,
-                                color=ft.Colors.WHITE,
-                                padding=ft.padding.all(16)
-                            ),
-                            expand=True
-                        ),
-                        ft.OutlinedButton(
-                            "Cancel", 
-                            on_click=lambda _: self.page.go("/"),
-                            style=ft.ButtonStyle(
-                                padding=ft.padding.all(16)
-                            ),
-                            expand=True
-                        ),
-                    ],
-                    spacing=8
-                ),
-                padding=ft.padding.only(top=16)
-            )
-        ], spacing=0)
-
+        # Simplified form layout for better performance
         return ft.View(
             "/add_car",
             [
                 ft.Container(
-                    content=form_content,
+                    content=ft.Column([
+                        ft.Text("Add New Car", size=18, weight=ft.FontWeight.BOLD),
+                        *fields.values(),
+                        ft.Row([
+                            ft.ElevatedButton(
+                                "Add Car", 
+                                on_click=add_car_click,
+                                style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_700, color=ft.Colors.WHITE)
+                            ),
+                            ft.OutlinedButton("Cancel", on_click=lambda _: self.page.go("/")),
+                        ], alignment=ft.MainAxisAlignment.SPACE_AROUND)
+                    ], spacing=8),
                     padding=ft.padding.all(16),
                     expand=True
                 )
             ],
             scroll=ft.ScrollMode.AUTO,
-            appbar=ft.AppBar(
-                title=ft.Text("Add Car"), 
-                bgcolor=ft.Colors.BLUE_700,
-                automatically_imply_leading=True
-            )
+            appbar=ft.AppBar(title=ft.Text("Add Car"), bgcolor=ft.Colors.BLUE_700)
         )
 
     def create_search_view(self):
@@ -527,19 +536,31 @@ class FletApp:
         self.page.go(destinations[e.control.selected_index])
 
 def run_flet_app():
-    """Run the Flet mobile app with optimized settings"""
+    """Run the Flet mobile app with highly optimized settings for fast loading"""
     app = FletApp()
+    
+    # Pre-load data asynchronously for faster startup
+    app._load_data_async()
+    
     try:
         ft.app(
             target=app.main, 
-            view=ft.AppView.FLET_APP,  # Better for mobile
-            port=0,  # Let system choose port
-            web_renderer=ft.WebRenderer.HTML  # Better performance on mobile
+            view=ft.AppView.FLET_APP,  # Native app view for better mobile performance
+            port=0,  # Let system choose available port
+            web_renderer=ft.WebRenderer.HTML,  # HTML renderer for better mobile performance
+            route_url_strategy="path",  # Better for mobile navigation
+            assets_dir="assets"  # Enable assets for faster resource loading
         )
     except Exception as e:
-        print(f"Error starting Flet app: {e}")
-        # Fallback to web browser view if FLET_APP fails
+        print(f"Error starting optimized Flet app: {e}")
+        # Fallback with simpler configuration
         try:
-            ft.app(target=app.main, view=ft.AppView.WEB_BROWSER)
+            ft.app(
+                target=app.main, 
+                view=ft.AppView.WEB_BROWSER,
+                port=0
+            )
         except Exception as fallback_e:
-            print(f"Fallback also failed: {fallback_e}")
+            print(f"Fallback failed: {fallback_e}")
+            # Last resort - try with minimal config
+            ft.app(target=app.main)
