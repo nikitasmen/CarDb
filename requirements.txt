@@ -1,6 +1,4 @@
-pyqt5
+flet>=0.28.3
 tabulate
-pyinstaller
 pandas
 openpyxl
-flet>=0.28.3

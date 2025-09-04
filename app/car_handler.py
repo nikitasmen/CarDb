@@ -3,19 +3,42 @@ import json
 import csv
 import pandas as pd
 import sys
-from data import FileIO
+from .data import FileIO
 
 class CarFileHandler:
     def __init__(self, target=None):
         if target is None:
-            base_dir = os.path.dirname(os.path.abspath(__file__))
-            # Adjust the path to work in both development and packaged environments
+            # Mobile-friendly path resolution
             if getattr(sys, 'frozen', False):
+                # For packaged apps
                 base_dir = sys._MEIPASS
-            target = os.path.join(base_dir, 'data/car.json')
+            else:
+                # For development
+                base_dir = os.path.dirname(os.path.abspath(__file__))
+            
+            # Ensure data directory exists
+            data_dir = os.path.join(base_dir, 'data')
+            os.makedirs(data_dir, exist_ok=True)
+            target = os.path.join(data_dir, 'car.json')
+            
         self.target = target
-        if not os.path.exists(self.target):
-            with open(self.target, 'w') as f:
+        # Initialize file if it doesn't exist
+        self._ensure_file_exists()
+
+    def _ensure_file_exists(self):
+        """Ensure the target file exists and is valid JSON"""
+        try:
+            if not os.path.exists(self.target):
+                os.makedirs(os.path.dirname(self.target), exist_ok=True)
+                with open(self.target, 'w', encoding='utf-8') as f:
+                    json.dump([], f)
+            else:
+                # Validate existing file
+                with open(self.target, 'r', encoding='utf-8') as f:
+                    json.load(f)
+        except (json.JSONDecodeError, IOError):
+            # Reset corrupted file
+            with open(self.target, 'w', encoding='utf-8') as f:
                 json.dump([], f)
 
     def saveTarget(self, data):
