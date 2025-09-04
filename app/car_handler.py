@@ -3,7 +3,7 @@ import json
 import csv
 import pandas as pd
 import sys
-from data import FileIO
+from .data import FileIO
 
 class CarFileHandler:
     def __init__(self, target=None):
