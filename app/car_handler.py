@@ -4,7 +4,12 @@ import csv
 import pandas as pd
 import sys
 from .data import FileIO
-from .models import normalize_car_record, validate_car_record, ALLOWED_KEYS
+from .models import (
+    ALLOWED_KEYS,
+    Car,
+    to_car_list,
+    to_dict_list,
+)
 
 class CarFileHandler:
     def __init__(self, target=None):
@@ -43,19 +48,9 @@ class CarFileHandler:
                 json.dump([], f)
 
     def saveTarget(self, data):
-        # Normalize and validate every record before saving
-        normalized = []
-        for item in (data or []):
-            try:
-                n = normalize_car_record(item)
-                ok, _ = validate_car_record(n)
-                if ok:
-                    normalized.append(n)
-            except Exception:
-                # Skip records that cannot be normalized
-                continue
-        data = self.cleanup(normalized)
-        return FileIO.write_json(self.target, data)
+        # Convert incoming records to Car objects (normalizes internally)
+        cars = to_car_list(data or [])
+        return FileIO.write_json(self.target, to_dict_list(cars))
 
     def displayData(self):
         return FileIO.read_json(self.target)
@@ -76,16 +71,11 @@ class CarFileHandler:
             print("Error: Invalid or missing JSON file.")
             return False
 
-        # Normalize keys to snake_case to match schema
         if isinstance(data, dict):
             data = [data]
-        normalized = []
-        for row in data:
-            if isinstance(row, dict):
-                normalized.append({(k.lower().replace(' ', '_')): v for k, v in row.items()})
 
         current_data = self.displayData()
-        current_data.extend(normalized)
+        current_data.extend(data)
         if self.saveTarget(current_data): 
             print("Data imported successfully from JSON!")
             return True
@@ -103,14 +93,8 @@ class CarFileHandler:
             print("Error: Invalid CSV file.")
             return False
 
-        # Normalize keys to snake_case to match schema
-        normalized = []
-        for row in data:
-            if isinstance(row, dict):
-                normalized.append({(k.lower().replace(' ', '_')): v for k, v in row.items()})
-
         current_data = self.displayData()
-        current_data.extend(normalized)
+        current_data.extend(data)
         if self.saveTarget(current_data): 
             print("Data imported successfully from CSV!")
             return True
