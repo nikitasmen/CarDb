@@ -4,6 +4,7 @@ import csv
 import pandas as pd
 import sys
 from .data import FileIO
+from .models import normalize_car_record, validate_car_record, ALLOWED_KEYS
 
 class CarFileHandler:
     def __init__(self, target=None):
@@ -42,17 +43,27 @@ class CarFileHandler:
                 json.dump([], f)
 
     def saveTarget(self, data):
-        data = self.cleanup(data)
+        # Normalize and validate every record before saving
+        normalized = []
+        for item in (data or []):
+            try:
+                n = normalize_car_record(item)
+                ok, _ = validate_car_record(n)
+                if ok:
+                    normalized.append(n)
+            except Exception:
+                # Skip records that cannot be normalized
+                continue
+        data = self.cleanup(normalized)
         return FileIO.write_json(self.target, data)
 
     def displayData(self):
         return FileIO.read_json(self.target)
 
     def cleanup(self, data):
-        allowed_keys = ["model", "manufacturer", "year", "country_of_origin", "category", "replica_model", "info"]
         cleaned_data = []
         for car in data:
-            car = {key: car[key] for key in car if key in allowed_keys}
+            car = {key: car[key] for key in car if key in ALLOWED_KEYS}
             if car:
                 cleaned_data.append(car)
         return cleaned_data
@@ -65,8 +76,16 @@ class CarFileHandler:
             print("Error: Invalid or missing JSON file.")
             return False
 
+        # Normalize keys to snake_case to match schema
+        if isinstance(data, dict):
+            data = [data]
+        normalized = []
+        for row in data:
+            if isinstance(row, dict):
+                normalized.append({(k.lower().replace(' ', '_')): v for k, v in row.items()})
+
         current_data = self.displayData()
-        current_data.extend(data)
+        current_data.extend(normalized)
         if self.saveTarget(current_data): 
             print("Data imported successfully from JSON!")
             return True
@@ -84,8 +103,14 @@ class CarFileHandler:
             print("Error: Invalid CSV file.")
             return False
 
+        # Normalize keys to snake_case to match schema
+        normalized = []
+        for row in data:
+            if isinstance(row, dict):
+                normalized.append({(k.lower().replace(' ', '_')): v for k, v in row.items()})
+
         current_data = self.displayData()
-        current_data.extend(data)
+        current_data.extend(normalized)
         if self.saveTarget(current_data): 
             print("Data imported successfully from CSV!")
             return True
@@ -100,7 +125,6 @@ class CarFileHandler:
             if df.columns[0].startswith("Unnamed"):
                 df.columns = [f"Column_{i}" for i in range(len(df.columns))]  # Generic column names
 
-            print(df.head())  # Check the cleaned dataframe
             data = df.to_dict(orient='records')
         except FileNotFoundError:
             print("File not found.")
