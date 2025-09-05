@@ -182,16 +182,6 @@ To build for iOS (macOS only):
 ```sh
 flet pack interfaces/flet_app.py --ios
 ```
-
-### Optional desktop GUI (PyQt)
-
-The repository includes a basic PyQt GUI (`interfaces/gui.py`) for desktop use. PyQt5 is not listed in `requirements.txt` to avoid conflicts with Flet mobile builds. If you want to use the PyQt GUI locally:
-
-```sh
-pip install PyQt5
-python -c "from interfaces.gui import CarTrackerApp; import sys; from PyQt5.QtWidgets import QApplication; app = QApplication(sys.argv); w = CarTrackerApp(); w.show(); sys.exit(app.exec_())"
-```
-
 ### Contributing
 
 1. Fork the repository
