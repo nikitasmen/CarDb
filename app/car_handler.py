@@ -4,6 +4,12 @@ import csv
 import pandas as pd
 import sys
 from .data import FileIO
+from .models import (
+    ALLOWED_KEYS,
+    Car,
+    to_car_list,
+    to_dict_list,
+)
 
 class CarFileHandler:
     def __init__(self, target=None):
@@ -42,17 +48,17 @@ class CarFileHandler:
                 json.dump([], f)
 
     def saveTarget(self, data):
-        data = self.cleanup(data)
-        return FileIO.write_json(self.target, data)
+        # Convert incoming records to Car objects (normalizes internally)
+        cars = to_car_list(data or [])
+        return FileIO.write_json(self.target, to_dict_list(cars))
 
     def displayData(self):
         return FileIO.read_json(self.target)
 
     def cleanup(self, data):
-        allowed_keys = ["model", "manufacturer", "year", "country_of_origin", "category", "replica_model", "info"]
         cleaned_data = []
         for car in data:
-            car = {key: car[key] for key in car if key in allowed_keys}
+            car = {key: car[key] for key in car if key in ALLOWED_KEYS}
             if car:
                 cleaned_data.append(car)
         return cleaned_data
@@ -64,6 +70,9 @@ class CarFileHandler:
         except (FileNotFoundError, json.JSONDecodeError):
             print("Error: Invalid or missing JSON file.")
             return False
+
+        if isinstance(data, dict):
+            data = [data]
 
         current_data = self.displayData()
         current_data.extend(data)
@@ -100,7 +109,6 @@ class CarFileHandler:
             if df.columns[0].startswith("Unnamed"):
                 df.columns = [f"Column_{i}" for i in range(len(df.columns))]  # Generic column names
 
-            print(df.head())  # Check the cleaned dataframe
             data = df.to_dict(orient='records')
         except FileNotFoundError:
             print("File not found.")

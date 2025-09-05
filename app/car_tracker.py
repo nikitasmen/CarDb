@@ -1,4 +1,11 @@
 from app import CarFileHandler
+from .models import (
+    normalize_car_record,
+    validate_car_record,
+    to_car_list,
+    to_dict_list,
+    Car,
+)
 
 class CarTracker:
     def __init__(self):
@@ -19,33 +26,43 @@ class CarTracker:
                 return False
         return True
 
+    def _load_cars(self) -> list[Car]:
+        data = self.fileHandler.displayData()
+        return to_car_list(data)
+
+    def _save_cars(self, cars: list[Car]) -> bool:
+        return self.fileHandler.saveTarget(to_dict_list(cars))
+
     def addData(self, modelName, manufacturer, year, originCountry, category, modelManufact, more):
         if not self._ensure_handler():
             return False
             
         try:
-            carDetails = {
-                "model": str(modelName).strip(),
-                "manufacturer": str(manufacturer).strip(),
-                "year": str(year).strip(),
-                "country_of_origin": str(originCountry).strip(),
-                "category": str(category).strip(),
-                "replica_model": str(modelManufact).strip(),
-                "info": str(more).strip()
+            raw = {
+                "model": modelName,
+                "manufacturer": manufacturer,
+                "year": year,
+                "country_of_origin": originCountry,
+                "category": category,
+                "replica_model": modelManufact,
+                "info": more,
             }
+            carDetails = normalize_car_record(raw)
+            ok, _ = validate_car_record(carDetails)
+            if not ok:
+                return False
 
-            data = self.fileHandler.displayData()
-            if data is None:
-                data = []
+            cars = self._load_cars()
             
-            # Check for duplicate model names
-            for existing_car in data:
-                if existing_car.get("model", "").lower() == carDetails["model"].lower():
+            # Check for duplicate model names (case-insensitive)
+            for existing_car in cars:
+                if existing_car.model.lower() == carDetails["model"].lower():
                     print(f"Car with model '{carDetails['model']}' already exists")
                     return False
             
-            data.append(carDetails)
-            return self.fileHandler.saveTarget(data)
+            # Append as object to keep internal consistency
+            cars.append(Car.from_dict(carDetails))
+            return self._save_cars(cars)
         except Exception as e:
             print(f"Error adding car data: {e}")
             return False
@@ -56,14 +73,14 @@ class CarTracker:
             
         try:
             results = []
-            data = self.fileHandler.displayData()
-            if data is None:
-                return []
-                
+            cars = self._load_cars()
             search_term = str(modelName).lower().strip()
-            for car_data in data:
-                if search_term in car_data.get("model", "").lower():
-                    results.append(car_data)
+            for car in cars:
+                if search_term in car.model.lower():
+                    d = car.to_dict()
+                    if 'id' in d:
+                        d.pop('id')
+                    results.append(d)
             return results
         except Exception as e:
             print(f"Error searching cars: {e}")
@@ -74,17 +91,14 @@ class CarTracker:
             return False
             
         try:
-            data = self.fileHandler.displayData()
-            if data is None:
-                return False
-                
+            cars = self._load_cars()
             model_to_delete = str(modelName).lower().strip()
-            filtered_data = [car for car in data if car.get("model", "").lower() != model_to_delete]
+            filtered_cars = [car for car in cars if car.model.lower() != model_to_delete]
 
-            if len(filtered_data) == len(data):
+            if len(filtered_cars) == len(cars):
                 return False  # No car found to delete
 
-            return self.fileHandler.saveTarget(filtered_data)
+            return self._save_cars(filtered_cars)
         except Exception as e:
             print(f"Error deleting car data: {e}")
             return False
@@ -112,8 +126,14 @@ class CarTracker:
             return []
             
         try:
-            data = self.fileHandler.displayData()
-            return data if data is not None else []
+            # Return dicts for UI compatibility but hide internal id
+            public = []
+            for c in self._load_cars():
+                d = c.to_dict()
+                if 'id' in d:
+                    d.pop('id')
+                public.append(d)
+            return public
         except Exception as e:
             print(f"Error displaying data: {e}")
             return []

@@ -95,51 +95,24 @@ class FletApp:
         page.on_view_pop = self.view_pop
         page.go("/")
 
-    # Helper Methods for DRY Code
-    def _create_modern_text_field(self, label, hint_text, icon=None, keyboard_type=None, required=False):
-        """Create a standardized text field with modern styling"""
-        field = ft.TextField(
-            label=f"{label}{' *' if required else ''}",
-            hint_text=hint_text,
-            prefix_icon=icon,
-            border_radius=UIConstants.BORDER_RADIUS,
-            filled=True,
-            bgcolor=UIConstants.BACKGROUND_COLOR,
-            keyboard_type=keyboard_type
-        )
-        return field
-
-    def _create_modern_button(self, text, icon=None, on_click=None, style_type="primary", expand=False):
-        """Create a standardized button with modern styling"""
-        colors = {
-            "primary": (UIConstants.PRIMARY_COLOR, UIConstants.SURFACE_COLOR),
-            "secondary": (UIConstants.SURFACE_COLOR, UIConstants.TEXT_PRIMARY),
-            "danger": (UIConstants.ERROR_COLOR, UIConstants.SURFACE_COLOR)
-        }
-        
-        bg_color, text_color = colors.get(style_type, colors["primary"])
-        
-        content = ft.Row([
-            ft.Icon(icon, size=UIConstants.ICON_SIZE_SMALL) if icon else ft.Container(),
-            ft.Text(text, size=UIConstants.FONT_SIZE_LARGE, weight=ft.FontWeight.BOLD)
-        ], alignment=ft.MainAxisAlignment.CENTER, spacing=UIConstants.SPACING_SMALL)
-        
-        button = ft.ElevatedButton(
-            content=content,
+    # Helper Methods for DRY Code (single authoritative versions)
+    def _create_modern_button(self, text, icon, on_click, bgcolor=UIConstants.PRIMARY_LIGHT, color=UIConstants.SURFACE_COLOR, expand=False):
+        """Create a modern styled button with consistent design"""
+        return ft.ElevatedButton(
+            content=ft.Row([
+                ft.Icon(icon, size=20),
+                ft.Text(text, size=16, weight=ft.FontWeight.BOLD)
+            ], alignment=ft.MainAxisAlignment.CENTER, spacing=8),
             on_click=on_click,
             style=ft.ButtonStyle(
-                bgcolor=bg_color,
-                color=text_color,
-                padding=ft.padding.symmetric(horizontal=24, vertical=UIConstants.PADDING_STANDARD),
-                shape=ft.RoundedRectangleBorder(radius=UIConstants.BORDER_RADIUS),
+                bgcolor=bgcolor,
+                color=color,
+                padding=ft.padding.symmetric(horizontal=24, vertical=16),
+                shape=ft.RoundedRectangleBorder(radius=12),
                 elevation=2
-            )
+            ),
+            expand=expand
         )
-        
-        if expand:
-            button.expand = True
-            
-        return button
 
     def _create_outlined_button(self, text, icon=None, on_click=None, expand=False):
         """Create a standardized outlined button"""
@@ -164,8 +137,8 @@ class FletApp:
             
         return button
 
-    def _create_modern_header(self, title, subtitle, icon):
-        """Create a standardized header with icon, title, and subtitle"""
+    def _create_modern_header(self, title, subtitle, icon, icon_color=UIConstants.PRIMARY_LIGHT):
+        """Create a modern header with icon and text"""
         return ft.Container(
             content=ft.Row([
                 ft.Container(
@@ -280,7 +253,7 @@ class FletApp:
             keyboard_type=keyboard_type,
             border_radius=12,
             filled=True,
-            bgcolor=ft.Colors.GREY_50
+            bgcolor=UIConstants.BACKGROUND_COLOR
         )
 
     def _load_data_async(self):
@@ -372,31 +345,31 @@ class FletApp:
                 content=ft.Row([
                     ft.Container(
                         content=ft.Column([
-                            ft.Icon(ft.Icons.DIRECTIONS_CAR, size=32, color=ft.Colors.INDIGO_700),
-                            ft.Text(f"{len(cars_data)}", size=24, weight=ft.FontWeight.BOLD, color=ft.Colors.INDIGO_700),
-                            ft.Text("Total Cars", size=12, color=ft.Colors.GREY_600)
+                            ft.Icon(ft.Icons.DIRECTIONS_CAR, size=UIConstants.ICON_SIZE_LARGE, color=UIConstants.PRIMARY_COLOR),
+                            ft.Text(f"{len(cars_data)}", size=UIConstants.FONT_SIZE_HEADER, weight=ft.FontWeight.BOLD, color=UIConstants.PRIMARY_COLOR),
+                            ft.Text("Total Cars", size=UIConstants.FONT_SIZE_SMALL, color=UIConstants.TEXT_SECONDARY)
                         ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=2),
-                        padding=ft.padding.all(16),
-                        bgcolor=ft.Colors.INDIGO_50,
-                        border_radius=12,
+                        padding=ft.padding.all(UIConstants.PADDING_STANDARD),
+                        bgcolor=UIConstants.PRIMARY_SURFACE,
+                        border_radius=UIConstants.BORDER_RADIUS,
                         expand=True
                     ),
                     ft.Container(width=8),
                     ft.Container(
                         content=ft.Column([
-                            ft.Icon(ft.Icons.CATEGORY, size=32, color=ft.Colors.GREEN_700),
+                            ft.Icon(ft.Icons.CATEGORY, size=UIConstants.ICON_SIZE_LARGE, color=UIConstants.SUCCESS_COLOR),
                             ft.Text(f"{len(set(car.get('category', 'Other') for car in cars_data))}", 
-                                   size=24, weight=ft.FontWeight.BOLD, color=ft.Colors.GREEN_700),
-                            ft.Text("Categories", size=12, color=ft.Colors.GREY_600)
+                                   size=UIConstants.FONT_SIZE_HEADER, weight=ft.FontWeight.BOLD, color=UIConstants.SUCCESS_COLOR),
+                            ft.Text("Categories", size=UIConstants.FONT_SIZE_SMALL, color=UIConstants.TEXT_SECONDARY)
                         ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=2),
-                        padding=ft.padding.all(16),
-                        bgcolor=ft.Colors.GREEN_50,
-                        border_radius=12,
+                        padding=ft.padding.all(UIConstants.PADDING_STANDARD),
+                        bgcolor=UIConstants.PRIMARY_ACCENT,
+                        border_radius=UIConstants.BORDER_RADIUS,
                         expand=True
                     )
                 ], spacing=0),
-                padding=ft.padding.all(12),
-                margin=ft.margin.only(bottom=8)
+                padding=ft.padding.all(UIConstants.PADDING_STANDARD - 4),
+                margin=ft.margin.only(bottom=UIConstants.PADDING_STANDARD / 2)
             )
 
             # Use ListView with auto_scroll=False to maintain scroll position
@@ -414,7 +387,7 @@ class FletApp:
                 floating_action_button=ft.FloatingActionButton(
                     icon=ft.Icons.ADD, 
                     on_click=lambda _: self.page.go("/add_car"),
-                    bgcolor=ft.Colors.INDIGO_600,
+                    bgcolor=UIConstants.PRIMARY_LIGHT,
                     tooltip="Add New Car",
                     shape=ft.CircleBorder(),
                     elevation=4
@@ -422,7 +395,7 @@ class FletApp:
                 appbar=self.page.appbar,
                 navigation_bar=self.page.navigation_bar,
                 padding=0,
-                bgcolor=ft.Colors.GREY_50  # Light background
+                bgcolor=UIConstants.BACKGROUND_COLOR  # Light background
             )
         except Exception as e:
             print(f"Error creating main view: {e}")

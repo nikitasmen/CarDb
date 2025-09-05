@@ -69,7 +69,7 @@ A mobile-first CRUD application for managing your miniature car collection. Trac
 6. (Optional) Build the mobile app:
 
    ```sh
-   flet pack flet_app.py
+   flet pack interfaces/flet_app.py
    ```
 
    The mobile app will be available in the `dist` directory.
@@ -105,22 +105,12 @@ A mobile-first CRUD application for managing your miniature car collection. Trac
 
 ### Starting the Application
 
-For mobile app (default):
+- Start with interface selection:
 
 ```sh
-python flet_app.py
+python main.py --flet   # Flet UI (mobile/desktop)
+python main.py --cli    # CLI
 ```
-
-For desktop with interface options:
-
-```sh
-python main.py
-```
-
-When using main.py, select your preferred interface:
-
-- For Flet mobile mode: Type `flet` or simply press Enter (default)
-- For CLI mode: Type `cli`
 
 ### Mobile Interface (Flet)
 
@@ -172,9 +162,7 @@ CarDb/
 │   ├── cli.py           # Command-line interface
 │   └── flet_app.py      # Mobile Flet interface
 ├── main.py              # Application entry point
-├── flet_app.py          # Mobile app entry point
 ├── requirements.txt     # Project dependencies
-├── flet.yml             # Flet app configuration
 ├── linux_setup.sh       # Linux/macOS setup script
 └── windows_setup.bat    # Windows setup script
 ```
@@ -186,15 +174,14 @@ CarDb/
 To build for Android:
 
 ```sh
-flet pack flet_app.py --android
+flet pack interfaces/flet_app.py --android
 ```
 
 To build for iOS (macOS only):
 
 ```sh
-flet pack flet_app.py --ios
+flet pack interfaces/flet_app.py --ios
 ```
-
 ### Contributing
 
 1. Fork the repository

@@ -42,7 +42,7 @@ class FileIO:
             # Atomically replace the original file
             os.replace(temp_path, file_path)
             return True
-        except (IOError, OSError, json.JSONEncodeError) as e:
+        except (IOError, OSError, TypeError, ValueError) as e:
             print(f"Error writing JSON file: {e}")
             # Clean up temp file if it exists
             try:
