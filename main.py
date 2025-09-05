@@ -7,7 +7,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'app'))
 from interfaces import Cli, run_flet_app
 
 if __name__ == "__main__":
-    print("Starting CarDb Mobile App")
     try:
         interface = 'flet'  # Default interface for mobile
 
