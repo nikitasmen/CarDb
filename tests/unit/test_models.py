@@ -372,3 +372,4 @@ class TestDataConversion:
         """Test converting None input"""
         dict_list = to_dict_list(None)
         assert len(dict_list) == 0
+

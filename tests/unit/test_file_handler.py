@@ -312,3 +312,4 @@ class TestFileHandlerErrorHandling:
             
             # Should not raise exception, should handle gracefully
             assert handler.target == target_file
+
