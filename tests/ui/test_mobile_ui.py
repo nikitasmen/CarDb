@@ -443,3 +443,4 @@ class TestMobileResponsiveDesign:
         # Icon buttons should be appropriately sized
         # This would be tested in actual UI rendering
         assert button is not None
+
