@@ -2,5 +2,6 @@ flet>=0.28.3
 tabulate
 pandas
 openpyxl
+psutil
 pytest
 flake8
